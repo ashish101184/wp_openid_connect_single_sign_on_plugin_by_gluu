@@ -45,11 +45,11 @@ All other authentication applications are supported through in website https://w
 *	Variety of troubleshooting topics in plugin.
 *	**Support** using website https://www.support.gluu.org.
 
-= Website - =
-Gluu server site: https://www.gluu.org
-Documentation : https://oxd.gluu.org/docs/plugin/wordpress/
-Support : https://www.support.gluu.org
-Deploy : https://www.gluu.org/deploy
+= Website =
+*   **Gluu server site :** https://www.gluu.org
+*   **Documentation :** https://oxd.gluu.org/docs/plugin/wordpress/
+*   **Support :** https://www.support.gluu.org
+*   **Deploy :** https://www.gluu.org/deploy
 
 == Installation ==
 
@@ -86,5 +86,9 @@ To add login icons to a custom location, use a Shortcode. For further details re
 
 
 == Changelog ==
+= 2.4.2 =
+* First version of OpenID Connect Single Sign On (SSO) Plugin By Gluu.
+
+== Upgrade Notice ==
 = 2.4.2 =
 * First version of OpenID Connect Single Sign On (SSO) Plugin By Gluu.
