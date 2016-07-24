@@ -24,7 +24,8 @@ class gluu_OpenID_OXD {
 		add_action( 'admin_enqueue_scripts', array( $this, 'oxd_openid_plugin_settings_script' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'oxd_openid_plugin_settings_style' ) ,5);
 		register_deactivation_hook(__FILE__, array( $this, 'oxd_openid_deactivate'));
-		register_activation_hook( __FILE__, array( $this, 'oxd_openid_activate' ) );
+		register_uninstall_hook( __FILE__, array( $this, 'oxd_openid_uninstall'));
+
 		// add social login icons to default login form
 		if(get_option('oxd_openid_default_login_enable') == 1){
 			add_action( 'login_form', array($this, 'oxd_openid_add_gluu_login') );
@@ -550,6 +551,39 @@ class gluu_OpenID_OXD {
 			}
 		}
 		return $avatar;
+	}
+	// And here goes the uninstallation function:
+	function oxd_openid_uninstall(){
+		//delete all stored key-value pairs
+		delete_option('oxd_config');
+		delete_option('oxd_id');
+		delete_option('oxd_openid_new_registration');
+		delete_option('oxd_openid_admin_email');
+		delete_option('oxd_openid_message');
+		foreach(get_option('oxd_openid_custom_scripts') as $custom_script){
+			delete_option('oxd_openid_'.$custom_script['value'].'_enable');
+		}
+		delete_option('oxd_openid_default_login_enable');
+		delete_option('oxd_openid_default_register_enable');
+		delete_option('oxd_openid_default_comment_enable');
+		delete_option('oxd_openid_woocommerce_login_form');
+		delete_option('oxd_openid_login_redirect');
+		delete_option('oxd_openid_login_redirect_url');
+		delete_option('oxdOpenId_gluu_login_avatar');
+		delete_option('oxdOpenId_user_attributes');
+		delete_option( 'oxd_openid_login_theme' );
+		delete_option( 'oxd_openid_login_button_customize_text');
+		delete_option('oxd_login_icon_custom_size');
+		delete_option('oxd_login_icon_space' );
+		delete_option('oxd_login_icon_custom_width' );
+		delete_option('oxd_login_icon_custom_height' );
+		delete_option('oxd_openid_login_custom_theme' );
+		delete_option( 'oxd_login_icon_custom_color');
+		delete_option( 'oxd_openid_message');
+		delete_option('oxd_openid_logout_redirect');
+		delete_option('oxd_openid_logout_redirection_enable');
+		delete_option('oxd_openid_logout_redirect_url');
+		delete_option('oxd_openid_scops');
 	}
 }
 
