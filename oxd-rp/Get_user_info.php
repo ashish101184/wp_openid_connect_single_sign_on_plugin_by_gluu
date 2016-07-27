@@ -3,9 +3,9 @@
  * Created Vlad Karapetyan
  */
 
-require_once 'Client_OXD_RP.php';
+require_once 'ClientOXDRP.php';
 
-class Get_user_info extends Client_OXD_RP
+class GetUserInfo extends ClientOXDRP
 {
     /**start parameter for request!**/
         private $request_oxd_id = null;

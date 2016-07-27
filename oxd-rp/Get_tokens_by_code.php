@@ -3,9 +3,9 @@
  * Created Vlad Karapetyan
  */
 
-require_once 'Client_OXD_RP.php';
+require_once 'ClientOXDRP.php';
 
-class Get_tokens_by_code extends Client_OXD_RP
+class GetTokensByCode extends ClientOXDRP
 {
     /**start parameter for request!**/
         private $request_oxd_id = null;

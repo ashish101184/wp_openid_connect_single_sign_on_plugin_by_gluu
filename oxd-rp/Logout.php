@@ -3,9 +3,9 @@
 /**
  * Created by Vlad Karapetyan
  */
-require_once 'Client_OXD_RP.php';
+require_once 'ClientOXDRP.php';
 
-class Logout extends Client_OXD_RP
+class Logout extends ClientOXDRP
 {
     /**start parameter for request!**/
     private $request_oxd_id = null;

@@ -3,7 +3,7 @@
  * Created Vlad Karapetyan
  */
 
-abstract class Client_OXD_RP{
+abstract class ClientOXDRP{
 
     protected $data = array();
     protected $command;
@@ -19,7 +19,7 @@ abstract class Client_OXD_RP{
      */
     public function __construct()
     {
-        $oxd_config = get_option('oxd_config');
+        $oxd_config = get_option('gluu_oxd_config');
 
         $this->setCommand();
 
@@ -28,7 +28,7 @@ abstract class Client_OXD_RP{
      * request to oxd socket
      **/
     public function oxd_socket_request($data, $char_count = 8192){
-        $oxd_config = get_option('oxd_config');
+        $oxd_config = get_option('gluu_oxd_config');
         self::$socket = stream_socket_client( $oxd_config['oxd_host_ip'] . ':' . $oxd_config['oxd_host_port'], $errno, $errstr, STREAM_CLIENT_PERSISTENT);
         if (!self::$socket) {
             return 'Can not connect to oxd server';

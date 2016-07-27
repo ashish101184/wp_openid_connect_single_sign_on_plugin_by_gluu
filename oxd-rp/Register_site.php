@@ -3,9 +3,9 @@
  * Created Vlad Karapetyan
  */
 
-require_once 'Client_OXD_RP.php';
+require_once 'ClientOXDRP.php';
 
-class Register_site extends Client_OXD_RP
+class RegisterSite extends ClientOXDRP
 {
     /**start parameter for request!**/
     private $request_authorization_redirect_uri = null;

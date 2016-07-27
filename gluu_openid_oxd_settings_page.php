@@ -1,15 +1,15 @@
 <?php
 
-function is_oxd_registered() {
-    $email 			= get_option('oxd_openid_admin_email');
-    $oxd_id 	= get_option('oxd_id');
+function gluu_is_oxd_registered() {
+    $email 			= get_option('gluu_oxd_openid_admin_email');
+    $oxd_id 	= get_option('gluu_oxd_id');
     if( ! $email || ! $oxd_id ) {
         return 0;
     } else {
         return 1;
     }
 }
-function oxd_register_openid() {
+function gluu_oxd_register_openid() {
     if( isset( $_GET[ 'tab' ]) && $_GET[ 'tab' ] !== 'register' ) {
         $active_tab = $_GET[ 'tab' ];
     } else {
@@ -32,17 +32,17 @@ function oxd_register_openid() {
                     <td style="vertical-align:top;width:65%;">
                         <?php
                         if ( $active_tab == 'register') {
-                            if ( !is_oxd_registered()) {
-                                oxd_openid_show_new_registration_page();
+                            if ( !gluu_is_oxd_registered()) {
+                                gluu_oxd_openid_show_new_registration_page();
                             }else{
-                                oxd_openid_show_new_registration__restet_page();
+                                gluu_oxd_openid_show_new_registration__restet_page();
                             }
                         }else if($active_tab == 'login_config') {
-                            oxd_openid_login_config_info();
+                            gluu_oxd_openid_login_config_info();
                         } else if($active_tab == 'login'){
-                            oxd_openid_apps_config();
+                            gluu_oxd_openid_apps_config();
                         }else if($active_tab == 'help') {
-                            oxd_openid_troubleshoot_info();
+                            gluu_oxd_openid_troubleshoot_info();
                         }
                         ?>
                     </td>
@@ -52,7 +52,7 @@ function oxd_register_openid() {
     </div>
     <?php
 }
-function oxd_openid_show_new_registration_page() {
+function gluu_oxd_openid_show_new_registration_page() {
     update_option ( 'oxd_openid_new_registration', 'true' );
     global $current_user;
     get_currentuserinfo();
@@ -60,7 +60,7 @@ function oxd_openid_show_new_registration_page() {
     <form name="f" method="post" action="" id="register-form">
         <input type="hidden" name="option" value="oxd_openid_connect_register_site_oxd" />
         <div class="oxd_openid_table_layout">
-            <?php if(!is_oxd_registered()) { ?>
+            <?php if(!gluu_is_oxd_registered()) { ?>
                 <div class="mess_red">
                     Please enter the details of your OpenID Connect Provider.
                 </div>
@@ -140,7 +140,7 @@ function oxd_openid_show_new_registration_page() {
     </form>
     <?php
 }
-function oxd_openid_show_new_registration__restet_page() {
+function gluu_oxd_openid_show_new_registration__restet_page() {
     update_option ( 'oxd_openid_new_registration', 'true' );
     global $current_user;
     get_currentuserinfo();
@@ -159,12 +159,12 @@ function oxd_openid_show_new_registration__restet_page() {
                             OXD id
                         </th>
                         <td>
-                            <input <?php echo 'disabled'?> type="text" name="oxd_id" value="<?php echo get_option('oxd_id'); ?>" size="100%" />
+                            <input <?php echo 'disabled'?> type="text" name="oxd_id" value="<?php echo get_option('gluu_oxd_id'); ?>" size="100%" />
                         </td>
                     </tr>
                     <tr>
                         <th scope="row">
-                            <input type="submit" name="submit" value="Reset configurations" style="float:left; margin-right:2%; margin-top: -3px;width:200px; " <?php if(!is_oxd_registered()) echo 'disabled'?> class="button button-denger button-large" />
+                            <input type="submit" name="submit" value="Reset configurations" style="float:left; margin-right:2%; margin-top: -3px;width:200px; " <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> class="button button-denger button-large" />
                         </th>
                     </tr>
                     </tbody>
@@ -174,12 +174,12 @@ function oxd_openid_show_new_registration__restet_page() {
     </form>
     <?php
 }
-function oxd_openid_apps_config() {
+function gluu_oxd_openid_apps_config() {
     ?>
     <form id="form-apps" name="form-apps" method="post" action="">
         <input type="hidden" name="option" value="oxd_openid_enable_apps" />
         <div class="oxd_openid_table_layout">
-            <?php if(!is_oxd_registered()) { ?>
+            <?php if(!gluu_is_oxd_registered()) { ?>
                 <div class="mess_red">
                     Please enter OXD configuration to continue.
                 </div>
@@ -188,13 +188,13 @@ function oxd_openid_apps_config() {
                 <tr>
                     <td colspan="2">
                         <h4 style="margin-bottom:0 !important">Current Shortcode</h4>
-                        <?php if(get_option('oxd_openid_login_theme') != 'longbutton'){?>
-                            <code>[gluu_login  shape="<?php echo get_option('oxd_openid_login_theme');?>" theme="<?php echo get_option('oxd_openid_login_custom_theme');?>" space="<?php echo get_option('oxd_login_icon_space')?>" size="<?php echo get_option('oxd_login_icon_custom_size')?>"]</code><br>
+                        <?php if(get_option('gluu_oxd_openid_login_theme') != 'longbutton'){?>
+                            <code>[gluu_login  shape="<?php echo get_option('gluu_oxd_openid_login_theme');?>" theme="<?php echo get_option('gluu_oxd_openid_login_custom_theme');?>" space="<?php echo get_option('gluu_oxd_login_icon_space')?>" size="<?php echo get_option('gluu_oxd_login_icon_custom_size')?>"]</code><br>
                         <?php }else{?>
-                            <code>[gluu_login  shape="<?php echo get_option('oxd_openid_login_theme');?>" theme="<?php echo get_option('oxd_openid_login_custom_theme');?>" space="<?php echo get_option('oxd_login_icon_space')?>" width="<?php echo get_option('oxd_login_icon_custom_width')?>" height="<?php echo get_option('oxd_login_icon_custom_height')?>"]</code><br>
+                            <code>[gluu_login  shape="<?php echo get_option('gluu_oxd_openid_login_theme');?>" theme="<?php echo get_option('gluu_oxd_openid_login_custom_theme');?>" space="<?php echo get_option('gluu_oxd_login_icon_space')?>" width="<?php echo get_option('gluu_oxd_login_icon_custom_width')?>" height="<?php echo get_option('gluu_oxd_login_icon_custom_height')?>"]</code><br>
                         <?php }?>
                         <h3>Gluu login config
-                            <input type="submit" name="submit" value="Save" style="float:right; margin-right:2%; margin-top: -3px;width:100px;" <?php if(!is_oxd_registered()) echo 'disabled'?> class="button button-primary button-large" />
+                            <input type="submit" name="submit" value="Save" style="float:right; margin-right:2%; margin-top: -3px;width:100px;" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> class="button button-primary button-large" />
                         </h3>
                         <b>Customize your login icons using a range of shapes and sizes. You can choose different places to display these icons and also customize redirect url after login.</b>
                     </td>
@@ -206,12 +206,12 @@ function oxd_openid_apps_config() {
                         <table style="width:100%">
                             <tr>
                                 <?php
-                                $custom_scripts = get_option('oxd_openid_custom_scripts');
+                                $custom_scripts = get_option('gluu_oxd_openid_custom_scripts');
                                 foreach($custom_scripts as $custom_script){
                                     ?>
                                     <td>
-                                        <input type="checkbox" <?php if(!is_oxd_registered()) echo 'disabled'?> id="<?php echo $custom_script['value'];?>_enable" class="app_enable" name="<?php echo 'oxd_openid_'.$custom_script['value'].'_enable';?>" value="1" onchange="previewLoginIcons();"
-                                            <?php checked( get_option('oxd_openid_'.$custom_script['value'].'_enable') == 1 );?> /><strong><?php echo $custom_script['name'];?></strong>
+                                        <input type="checkbox" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> id="<?php echo $custom_script['value'];?>_enable" class="app_enable" name="<?php echo 'oxd_openid_'.$custom_script['value'].'_enable';?>" value="1" onchange="previewLoginIcons();"
+                                            <?php checked( get_option('gluu_oxd_openid_'.$custom_script['value'].'_enable') == 1 );?> /><strong><?php echo $custom_script['name'];?></strong>
                                     </td>
                                     <?php
                                 }
@@ -240,28 +240,28 @@ function oxd_openid_apps_config() {
                 <tr>
                     <td class="oxd_openid_table_td_checkbox">
                         <input type="radio" name="oxd_openid_login_theme" value="circle" onclick="checkLoginButton();oxdLoginPreview(document.getElementById('oxd_login_icon_size').value ,'circle',setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)"
-                            <?php if(!is_oxd_registered()) echo 'disabled'?>
-                            <?php checked( get_option('oxd_openid_login_theme') == 'circle' );?> />Round
+                            <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>
+                            <?php checked( get_option('gluu_oxd_openid_login_theme') == 'circle' );?> />Round
                         <span style="margin-left:106px; display: none">
                             <input type="radio" id="oxd_openid_login_default_radio"  name="oxd_openid_login_custom_theme" value="default" onclick="checkLoginButton();oxdLoginPreview(setSizeOfIcons(), setLoginTheme(),'default',document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)"
-                                <?php checked( get_option('oxd_openid_login_custom_theme') == 'default' );?> <?php if(!is_oxd_registered()) echo 'disabled'?>/>Default
+                                <?php checked( get_option('gluu_oxd_openid_login_custom_theme') == 'default' );?> <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>/>Default
 
                         </span>
                         <span  style="margin-left:111px;">
-                                <input style="width:50px" onkeyup="oxdLoginSpaceValidate(this)" id="oxd_login_icon_space" name="oxd_login_icon_space" type="text" value="<?php echo get_option('oxd_login_icon_space')?>" <?php if(!is_oxd_registered()) echo 'disabled'?>/>
-                                <input id="oxd_login_space_plus" type="button" value="+" onmouseup="oxdLoginPreview(setSizeOfIcons() ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)" <?php if(!is_oxd_registered()) echo 'disabled'?>/>
-                                <input id="oxd_login_space_minus" type="button" value="-" onmouseup="oxdLoginPreview(setSizeOfIcons()  ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)" <?php if(!is_oxd_registered()) echo 'disabled'?>/>
+                                <input style="width:50px" onkeyup="oxdLoginSpaceValidate(this)" id="oxd_login_icon_space" name="oxd_login_icon_space" type="text" value="<?php echo get_option('gluu_oxd_login_icon_space')?>" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>/>
+                                <input id="oxd_login_space_plus" type="button" value="+" onmouseup="oxdLoginPreview(setSizeOfIcons() ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>/>
+                                <input id="oxd_login_space_minus" type="button" value="-" onmouseup="oxdLoginPreview(setSizeOfIcons()  ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>/>
                         </span>
                         <span id="commontheme" style="margin-left:115px">
-                        <input style="width:50px" id="oxd_login_icon_size" onkeyup="oxdLoginSizeValidate(this)" name="oxd_login_icon_custom_size" type="text" value="<?php echo get_option('oxd_login_icon_custom_size')?>" <?php if(!is_oxd_registered()) echo 'disabled'?>>
-                        <input id="oxd_login_size_plus" type="button" value="+" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_size').value ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)" <?php if(!is_oxd_registered()) echo 'disabled'?>>
-                        <input id="oxd_login_size_minus" type="button" value="-" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_size').value ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)" <?php if(!is_oxd_registered()) echo 'disabled'?>>
+                        <input style="width:50px" id="oxd_login_icon_size" onkeyup="oxdLoginSizeValidate(this)" name="oxd_login_icon_custom_size" type="text" value="<?php echo get_option('gluu_oxd_login_icon_custom_size')?>" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>>
+                        <input id="oxd_login_size_plus" type="button" value="+" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_size').value ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>>
+                        <input id="oxd_login_size_minus" type="button" value="-" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_size').value ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>>
 
                         </span>
                         <span style="margin-left:115px" class="longbuttontheme">Width:&nbsp;
-                        <input style="width:50px" id="oxd_login_icon_width" onkeyup="oxdLoginWidthValidate(this)" name="oxd_login_icon_custom_width" type="text" value="<?php echo get_option('oxd_login_icon_custom_width')?>" <?php if(!is_oxd_registered()) echo 'disabled'?>>
-                        <input id="oxd_login_width_plus" type="button" value="+" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_width').value ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)" <?php if(!is_oxd_registered()) echo 'disabled'?>>
-                        <input id="oxd_login_width_minus" type="button" value="-" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_width').value ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)" <?php if(!is_oxd_registered()) echo 'disabled'?>>
+                        <input style="width:50px" id="oxd_login_icon_width" onkeyup="oxdLoginWidthValidate(this)" name="oxd_login_icon_custom_width" type="text" value="<?php echo get_option('gluu_oxd_login_icon_custom_width')?>" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>>
+                        <input id="oxd_login_width_plus" type="button" value="+" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_width').value ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>>
+                        <input id="oxd_login_width_minus" type="button" value="-" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_width').value ,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>>
 
                         </span>
                     </td>
@@ -269,17 +269,17 @@ function oxd_openid_apps_config() {
                 <tr>
                     <td class="oxd_openid_table_td_checkbox">
                         <input type="radio"   name="oxd_openid_login_theme"  value="oval" onclick="checkLoginButton();oxdLoginPreview(document.getElementById('oxd_login_icon_size').value,'oval',setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_size').value )"
-                            <?php if(!is_oxd_registered()) echo 'disabled'?>
-                            <?php checked( get_option('oxd_openid_login_theme') == 'oval' );?> />Rounded Edges
+                            <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>
+                            <?php checked( get_option('gluu_oxd_openid_login_theme') == 'oval' );?> />Rounded Edges
                         <span style="margin-left:50px; display: none">
-                            <input type="radio" id="oxd_openid_login_custom_radio"  name="oxd_openid_login_custom_theme" value="custom" onclick="checkLoginButton();oxdLoginPreview(setSizeOfIcons(), setLoginTheme(),'custom',document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)" <?php if(!is_oxd_registered()) echo 'disabled'?>
-                                <?php checked( get_option('oxd_openid_login_custom_theme') == 'custom' );?> />Custom Background*
+                            <input type="radio" id="oxd_openid_login_custom_radio"  name="oxd_openid_login_custom_theme" value="custom" onclick="checkLoginButton();oxdLoginPreview(setSizeOfIcons(), setLoginTheme(),'custom',document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>
+                                <?php checked( get_option('gluu_oxd_openid_login_custom_theme') == 'custom' );?> />Custom Background*
 
                             </span>
                         <span style="margin-left:249px" class="longbuttontheme" >Height:
-                    <input style="width:50px" id="oxd_login_icon_height" onkeyup="oxdLoginHeightValidate(this)" name="oxd_login_icon_custom_height" type="text" value="<?php echo get_option('oxd_login_icon_custom_height')?>" <?php if(!is_oxd_registered()) echo 'disabled'?>>
-                    <input id="oxd_login_height_plus" type="button" value="+" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_width').value,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)" <?php if(!is_oxd_registered()) echo 'disabled'?>>
-                    <input id="oxd_login_height_minus" type="button" value="-" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_width').value,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)" <?php if(!is_oxd_registered()) echo 'disabled'?>>
+                    <input style="width:50px" id="oxd_login_icon_height" onkeyup="oxdLoginHeightValidate(this)" name="oxd_login_icon_custom_height" type="text" value="<?php echo get_option('gluu_oxd_login_icon_custom_height')?>" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>>
+                    <input id="oxd_login_height_plus" type="button" value="+" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_width').value,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>>
+                    <input id="oxd_login_height_minus" type="button" value="-" onmouseup="oxdLoginPreview(document.getElementById('oxd_login_icon_width').value,setLoginTheme(),setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>>
 
                     </span>
                     </td>
@@ -287,17 +287,17 @@ function oxd_openid_apps_config() {
                 <tr>
                     <td class="oxd_openid_table_td_checkbox">
                         <input type="radio"   name="oxd_openid_login_theme" value="square" onclick="checkLoginButton();oxdLoginPreview(document.getElementById('oxd_login_icon_size').value ,'square',setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_size').value )"
-                            <?php if(!is_oxd_registered()) echo 'disabled'?>
-                            <?php checked( get_option('oxd_openid_login_theme') == 'square' );?> />Square
+                            <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>
+                            <?php checked( get_option('gluu_oxd_openid_login_theme') == 'square' );?> />Square
                         <span style="margin-left:113px; display: none">
-                            <input id="oxd_login_icon_custom_color" style="width:135px;" name="oxd_login_icon_custom_color"  class="color" value="<?php echo get_option('oxd_login_icon_custom_color')?>" onchange="oxdLoginPreview(setSizeOfIcons(), setLoginTheme(),'custom',document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)" <?php if(!is_oxd_registered()) echo 'disabled'?>>
+                            <input id="oxd_login_icon_custom_color" style="width:135px;" name="oxd_login_icon_custom_color"  class="color" value="<?php echo get_option('gluu_oxd_login_icon_custom_color')?>" onchange="oxdLoginPreview(setSizeOfIcons(), setLoginTheme(),'custom',document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value)" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>>
                         </span>
                     </td>
                 </tr>
                 <tr style="display: none">
                     <td class="oxd_openid_table_td_checkbox">
                         <input type="radio" id="iconwithtext"   name="oxd_openid_login_theme" value="longbutton" onclick="checkLoginButton();oxdLoginPreview(document.getElementById('oxd_login_icon_width').value ,'longbutton',setLoginCustomTheme(),document.getElementById('oxd_login_icon_custom_color').value,document.getElementById('oxd_login_icon_space').value,document.getElementById('oxd_login_icon_height').value)"
-                            <?php if(!is_oxd_registered()) echo 'disabled';  checked( get_option('oxd_openid_login_theme') == 'longbutton' );?> />Long Button with Text
+                            <?php if(!gluu_is_oxd_registered()) echo 'disabled';  checked( get_option('gluu_oxd_openid_login_theme') == 'longbutton' );?> />Long Button with Text
                     </td>
                 </tr>
                 <tr>
@@ -306,7 +306,7 @@ function oxd_openid_apps_config() {
                         <br/><span hidden id="no_apps_text">No apps selected</span>
                         <div>
                             <?php
-                            $custom_scripts = get_option('oxd_openid_custom_scripts');
+                            $custom_scripts = get_option('gluu_oxd_openid_custom_scripts');
                             foreach($custom_scripts as $custom_script){
                                 ?>
                                 <img class="oxd_login_icon_preview" id="oxd_login_icon_preview_<?php echo $custom_script['value'];?>" src="<?php echo $custom_script['image'];?>" />
@@ -319,7 +319,7 @@ function oxd_openid_apps_config() {
                             foreach($custom_scripts as $custom_script){
                                 ?>
                                 <a id="oxd_login_button_preview_<?php echo $custom_script['value'];?>" class="btn btn-block btn-defaulttheme btn-social btn-facebook btn-custom-size"> <i class="fa <?php echo $custom_script['icon_class'];?>"></i><?php
-                                    echo get_option('oxd_openid_login_button_customize_text'); 	?> <?php echo $custom_script['name'];?></a>
+                                    echo get_option('gluu_oxd_openid_login_button_customize_text'); 	?> <?php echo $custom_script['name'];?></a>
                                 <?php
                             }
                             ?>
@@ -339,7 +339,7 @@ function oxd_openid_apps_config() {
                             foreach($custom_scripts as $custom_script){
                                 ?>
                                 <a id="oxd_custom_login_button_preview_<?php echo $custom_script['value'];?>" class="btn btn-block btn-customtheme btn-social  btn-custom-size"> <i class="fa <?php echo $custom_script['icon_class'];?>"></i><?php
-                                    echo get_option('oxd_openid_login_button_customize_text'); 	?> <?php echo $custom_script['name'];?></a>
+                                    echo get_option('gluu_oxd_openid_login_button_customize_text'); 	?> <?php echo $custom_script['name'];?></a>
                                 <?php
                             }
                             ?>
@@ -363,38 +363,38 @@ function oxd_openid_apps_config() {
                 <tr>
                     <td class="oxd_openid_table_td_checkbox">
                         <input type="checkbox" id="default_login_enable" name="oxd_openid_default_login_enable" value="1"
-                            <?php if(!is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('oxd_openid_default_login_enable') == 1 );?> />Default Login Form
+                            <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('gluu_oxd_openid_default_login_enable') == 1 );?> />Default Login Form
                     </td>
                 </tr>
                 <tr>
                     <td class="oxd_openid_table_td_checkbox">
                         <input type="checkbox" id="default_register_enable" name="oxd_openid_default_register_enable" value="1"
-                            <?php if(!is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('oxd_openid_default_register_enable') == 1 );?> />Default Registration Form
+                            <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('gluu_oxd_openid_default_register_enable') == 1 );?> />Default Registration Form
                     </td>
                 </tr>
                 <tr>
                     <td class="oxd_openid_table_td_checkbox">
                         <input type="checkbox" id="default_comment_enable" name="oxd_openid_default_comment_enable" value="1"
-                            <?php if(!is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('oxd_openid_default_comment_enable') == 1 );?> />Comment Form
+                            <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('gluu_oxd_openid_default_comment_enable') == 1 );?> />Comment Form
                     </td>
                 </tr>
                 <tr>
                     <td class="oxd_openid_table_td_checkbox">
                         <input type="checkbox" id="woocommerce_login_form" name="oxd_openid_woocommerce_login_form" value="1"
-                            <?php if(!is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('oxd_openid_woocommerce_login_form') == 1 );?> />WooCommerce Login Form
+                            <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('gluu_oxd_openid_woocommerce_login_form') == 1 );?> />WooCommerce Login Form
                     </td>
                 </tr>
 
 
                 <?php
                 $script_option = array(
-                    'oxd_login_icon_custom_size'=>get_option('oxd_login_icon_custom_size'),
-                    'oxd_openid_login_theme'=>get_option('oxd_openid_login_theme'),
-                    'oxd_openid_login_custom_theme'=>get_option('oxd_openid_login_custom_theme'),
-                    'oxd_login_icon_custom_color'=>get_option('oxd_login_icon_custom_color'),
-                    'oxd_login_icon_space'=>get_option('oxd_login_icon_space'),
-                    'oxd_openid_custom_scripts'=>get_option('oxd_openid_custom_scripts'),
-                    'oxd_login_icon_custom_height'=>get_option('oxd_login_icon_custom_height')
+                    'oxd_login_icon_custom_size'=>get_option('gluu_oxd_login_icon_custom_size'),
+                    'oxd_openid_login_theme'=>get_option('gluu_oxd_openid_login_theme'),
+                    'oxd_openid_login_custom_theme'=>get_option('gluu_oxd_openid_login_custom_theme'),
+                    'oxd_login_icon_custom_color'=>get_option('gluu_oxd_login_icon_custom_color'),
+                    'oxd_login_icon_space'=>get_option('gluu_oxd_login_icon_space'),
+                    'oxd_openid_custom_scripts'=>get_option('gluu_oxd_openid_custom_scripts'),
+                    'oxd_login_icon_custom_height'=>get_option('gluu_oxd_login_icon_custom_height')
                 );
                 wp_enqueue_script( 'gluu_oxd_scripts',plugins_url('includes/js/gluu_oxd_scripts.js', __FILE__), array('jquery'));
                 wp_localize_script( 'gluu_oxd_scripts', 'option', $script_option );
@@ -404,16 +404,16 @@ function oxd_openid_apps_config() {
             <table class="oxd_openid_display_table">
                 <tr>
                     <td><b>Enter text to show above login widget:</b></td>
-                    <td><input class="oxd_openid_table_textbox" type="text" name="oxd_openid_login_widget_customize_text" <?php if(!is_oxd_registered()) echo 'disabled'?> value="<?php echo get_option('oxd_openid_login_widget_customize_text'); ?>" /></td>
+                    <td><input class="oxd_openid_table_textbox" type="text" name="oxd_openid_login_widget_customize_text" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> value="<?php echo get_option('gluu_oxd_openid_login_widget_customize_text'); ?>" /></td>
                 </tr>
                 <tr style="display: none">
                     <td><b>Enter text to show on your login buttons (If you have selected shape 4 from 'Customize Login Icons' section):</b></td>
-                    <td><input class="oxd_openid_table_textbox" type="text" name="oxd_openid_login_button_customize_text" <?php if(!is_oxd_registered()) echo 'disabled'?> value="<?php echo get_option('oxd_openid_login_button_customize_text'); ?>"  /></td>
+                    <td><input class="oxd_openid_table_textbox" type="text" name="oxd_openid_login_button_customize_text" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> value="<?php echo get_option('gluu_oxd_openid_login_button_customize_text'); ?>"  /></td>
                 </tr>
                 <tr>
                     <td>
                         <br />
-                        <input type="submit" name="submit" value="Save" style="width:100px;" <?php if(!is_oxd_registered()) echo 'disabled'?> class="button button-primary button-large" />
+                        <input type="submit" name="submit" value="Save" style="width:100px;" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> class="button button-primary button-large" />
                     </td>
                 </tr>
                 <tr>
@@ -455,27 +455,27 @@ function oxd_openid_apps_config() {
             <tr>
                 <td>
                     <input type="radio" id="login_redirect_same_page" name="oxd_openid_login_redirect" value="same"
-                        <?php if(!is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('oxd_openid_login_redirect') == 'same' );?> />Same page where user logged in
+                        <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('gluu_oxd_openid_login_redirect') == 'same' );?> />Same page where user logged in
                 </td>
             </tr>
             <tr>
                 <td>
                     <input type="radio" id="login_redirect_homepage" name="oxd_openid_login_redirect" value="homepage"
-                        <?php if(!is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('oxd_openid_login_redirect') == 'homepage' );?> />Homepage
+                        <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('gluu_oxd_openid_login_redirect') == 'homepage' );?> />Homepage
                 </td>
             </tr>
             <tr>
                 <td>
                     <input type="radio" id="login_redirect_dashboard" name="oxd_openid_login_redirect" value="dashboard"
-                        <?php if(!is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('oxd_openid_login_redirect') == 'dashboard' );?> />Account dashboard
+                        <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('gluu_oxd_openid_login_redirect') == 'dashboard' );?> />Account dashboard
                 </td>
             </tr>
             <tr>
                 <td>
                     <input type="radio" id="login_redirect_customurl" name="oxd_openid_login_redirect" value="custom"
-                        <?php if(!is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('oxd_openid_login_redirect') == 'custom' );?> />Custom URL
+                        <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('gluu_oxd_openid_login_redirect') == 'custom' );?> />Custom URL
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="url" id="login_redirect_url" style="width:50%" name="oxd_openid_login_redirect_url" value="<?php echo get_option('oxd_openid_login_redirect_url')?>" <?php if(!is_oxd_registered()) echo 'disabled'?>/>
+                    <input type="url" id="login_redirect_url" style="width:50%" name="oxd_openid_login_redirect_url" value="<?php echo get_option('gluu_oxd_openid_login_redirect_url')?>" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>/>
                 </td>
             </tr>
             <tr>
@@ -484,35 +484,35 @@ function oxd_openid_apps_config() {
             <tr>
                 <td>
                     <input type="checkbox" id="logout_redirection_enable" name="oxd_openid_logout_redirection_enable" value="1"
-                        <?php if(!is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('oxd_openid_logout_redirection_enable') == 1 );?> />
+                        <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('gluu_oxd_openid_logout_redirection_enable') == 1 );?> />
                     <b>Enable Logout Redirection</b>
                 </td>
             </tr>
             <tr>
                 <td>
                     <input type="radio" id="logout_redirect_home" name="oxd_openid_logout_redirect" value="homepage"
-                        <?php if(!is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('oxd_openid_logout_redirect') == 'homepage' );?> />Home Page
+                        <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('gluu_oxd_openid_logout_redirect') == 'homepage' );?> />Home Page
                 </td>
             </tr>
             <tr>
                 <td>
                     <input type="radio" id="logout_redirect_current" name="oxd_openid_logout_redirect" value="currentpage"
-                        <?php if(!is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('oxd_openid_logout_redirect') == 'currentpage' );?> />Current Page
+                        <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('gluu_oxd_openid_logout_redirect') == 'currentpage' );?> />Current Page
                 </td>
             </tr>
             <tr>
                 <td>
                     <input type="radio" id="logout_redirect_login" name="oxd_openid_logout_redirect" value="login"
-                        <?php if(!is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('oxd_openid_logout_redirect') == 'login' );?> />Login Page
+                        <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('gluu_oxd_openid_logout_redirect') == 'login' );?> />Login Page
                 </td>
             </tr>
             <tr>
                 <td>
                     <input type="radio" id="logout_redirect_customurl" name="oxd_openid_logout_redirect" value="custom"
-                        <?php if(!is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('oxd_openid_logout_redirect') == 'custom' );?> />Relative URL
+                        <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('gluu_oxd_openid_logout_redirect') == 'custom' );?> />Relative URL
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <?php echo site_url();?>
-                    <input type="text" id="logout_redirect_url" style="width:50%" name="oxd_openid_logout_redirect_url" value="<?php echo get_option('oxd_openid_logout_redirect_url')?>" <?php if(!is_oxd_registered()) echo 'disabled'?>/>
+                    <input type="text" id="logout_redirect_url" style="width:50%" name="oxd_openid_logout_redirect_url" value="<?php echo get_option('gluu_oxd_openid_logout_redirect_url')?>" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>/>
                 </td>
             </tr>
             <tr>
@@ -533,10 +533,10 @@ function oxd_openid_apps_config() {
                     with people who try to register through the regular WordPress registration form.
                     <br/><br/>
                     <input type="checkbox" id="auto_register_enable" name="oxd_openid_auto_register_enable" value="1"
-                        <?php if(!is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('oxd_openid_auto_register_enable') == 1 );?> /><b>Auto-register users</b>
+                        <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>	<?php checked( get_option('gluu_oxd_openid_auto_register_enable') == 1 );?> /><b>Auto-register users</b>
                     <br/><br/>
                     <b>Registration disabled message: </b>
-                    <textarea id="auto_register_disabled_message" style="width:80%" name="oxd_openid_register_disabled_message" <?php if(!is_oxd_registered()) echo 'disabled'?>><?php echo get_option('oxd_openid_register_disabled_message')?></textarea>
+                    <textarea id="auto_register_disabled_message" style="width:80%" name="oxd_openid_register_disabled_message" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?>><?php echo get_option('gluu_oxd_openid_register_disabled_message')?></textarea>
                 </td>
             </tr>
             <tr>
@@ -547,14 +547,14 @@ function oxd_openid_apps_config() {
                 </td>
             </tr>
             <tr>
-                <td><input type="checkbox" id="oxdOpenId_gluu_login_avatar" name="oxdOpenId_gluu_login_avatar" value="1" <?php if(!is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('oxdOpenId_gluu_login_avatar') == 1 );?> /><b>Set Display Picture for User</b>
+                <td><input type="checkbox" id="oxdOpenId_gluu_login_avatar" name="oxdOpenId_gluu_login_avatar" value="1" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('gluu_oxdOpenId_gluu_login_avatar') == 1 );?> /><b>Set Display Picture for User</b>
                 </td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td><input type="checkbox" id="oxdOpenId_user_attributes" name="oxdOpenId_user_attributes" value="1" <?php if(!is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('oxdOpenId_user_attributes') == 1 );?> /><b>Collect User Attributes</b>
+                <td><input type="checkbox" id="oxdOpenId_user_attributes" name="oxdOpenId_user_attributes" value="1" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> <?php checked( get_option('gluu_oxdOpenId_user_attributes') == 1 );?> /><b>Collect User Attributes</b>
                 </td>
             </tr>
             <tr>
@@ -569,15 +569,15 @@ function oxd_openid_apps_config() {
     </div>
     <?php
 }
-function oxd_openid_login_config_info(){
+function gluu_oxd_openid_login_config_info(){
     wp_enqueue_script('jquery');
     wp_enqueue_media();
     wp_enqueue_script( 'oxd_scope_custom_script',plugins_url('includes/js/oxd_scope_custom_script.js', __FILE__), array('jquery'));
     ?>
     <div class="oxd_openid_table_layout">
         <?php
-        $options = get_option('oxd_config');
-        if(!is_oxd_registered()) {
+        $options = get_option('gluu_oxd_config');
+        if(!gluu_is_oxd_registered()) {
             ?>
             <div class="mess_red">
                 Please enter OXD configuration to continue.
@@ -598,17 +598,17 @@ function oxd_openid_login_config_info(){
                             <th scope="col" >
                                 Scopes
                             </th>
-                            <?php $get_scopes = get_option('oxd_openid_scops');
+                            <?php $get_scopes = get_option('gluu_oxd_openid_scops');
                             ?>
                             <td>
                                 <div >
                                     <div>
                                         <?php foreach($get_scopes as $scop) :?>
                                             <?php if ($scop == 'openid'){?>
-                                                <input <?php if (!is_oxd_registered()) echo ' disabled ' ?>  type="hidden"  name="scope[]"  <?php if ($options && in_array($scop, $options['scope'])) {
+                                                <input <?php if (!gluu_is_oxd_registered()) echo ' disabled ' ?>  type="hidden"  name="scope[]"  <?php if ($options && in_array($scop, $options['scope'])) {
                                                     echo " checked "; } ?> value="<?php echo $scop; ?>" />
                                             <?php } ?>
-                                            <input <?php if($options && in_array($scop, $options['scope'])){ echo "checked";} ?> type="checkbox" name="scope[]"  id="<?php echo $scop;?>" value="<?php echo $scop;?>" <?php if (!is_oxd_registered() || $scop=='openid') echo ' disabled '; ?> />
+                                            <input <?php if($options && in_array($scop, $options['scope'])){ echo "checked";} ?> type="checkbox" name="scope[]"  id="<?php echo $scop;?>" value="<?php echo $scop;?>" <?php if (!gluu_is_oxd_registered() || $scop=='openid') echo ' disabled '; ?> />
                                             <label  for="<?php echo $scop;?>"><?php echo $scop;?></label>
                                         <?php endforeach;?>
                                     </div>
@@ -622,9 +622,9 @@ function oxd_openid_login_config_info(){
                             <td>
                                 <div >
                                     <div id="p_scents">
-                                        <input <?php if(!is_oxd_registered()) echo 'disabled'?> type="button" id="add_new_scope" value="Add scope">
+                                        <input <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> type="button" id="add_new_scope" value="Add scope">
                                         <p>
-                                            <input <?php if(!is_oxd_registered()) echo 'disabled'?> type="text" name="new_scope[]" placeholder="Input scope name" />
+                                            <input <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> type="text" name="new_scope[]" placeholder="Input scope name" />
                                         </p>
                                     </div>
                                 </div>
@@ -644,7 +644,7 @@ function oxd_openid_login_config_info(){
                                         <th><h3>Delete</h3></th>
                                     </tr>
                                     <?php
-                                    $custom_scripts = get_option('oxd_openid_scops');
+                                    $custom_scripts = get_option('gluu_oxd_openid_scops');
                                     $n = 0;
                                     foreach($custom_scripts as $custom_script){
                                         $n++;
@@ -654,7 +654,7 @@ function oxd_openid_login_config_info(){
                                             <td><?php echo $custom_script;?></td>
                                             <td>
                                                 <?php if($custom_script!='openid'){?>
-                                                    <input type="button" onclick="delete_scopes('<?php echo $custom_script;?>')" class="button button-primary button-large" <?php if(!is_oxd_registered() || $custom_script=='openid') echo 'disabled'?> value="Delete" name="set_oxd_config" />
+                                                    <input type="button" onclick="delete_scopes('<?php echo $custom_script;?>')" class="button button-primary button-large" <?php if(!gluu_is_oxd_registered() || $custom_script=='openid') echo 'disabled'?> value="Delete" name="set_oxd_config" />
                                                 <?php }?>
                                             </td>
                                         </tr>
@@ -670,7 +670,7 @@ function oxd_openid_login_config_info(){
                                 <h3>Custom scripts.</h3>
                                 <h4><i>Select applications to enable login for your users.</i></h4>
                             </th>
-                            <?php $get_scopes = get_option('oxd_openid_custom_scripts');
+                            <?php $get_scopes = get_option('gluu_oxd_openid_custom_scripts');
                             ?>
                             <td>
                                 <div style="margin-right: 30px">
@@ -711,12 +711,12 @@ function oxd_openid_login_config_info(){
                                                 <table style="width:100%">
                                                     <tr>
                                                         <?php
-                                                        $custom_scripts = get_option('oxd_openid_custom_scripts');
+                                                        $custom_scripts = get_option('gluu_oxd_openid_custom_scripts');
                                                         foreach($custom_scripts as $custom_script){
                                                             ?>
                                                             <td>
-                                                                <input type="checkbox" <?php if(!is_oxd_registered()) echo 'disabled'?> id="<?php echo $custom_script['value'];?>_enable" class="app_enable" name="<?php echo 'oxd_openid_'.$custom_script['value'].'_enable';?>" value="1" onchange="previewLoginIcons();"
-                                                                    <?php checked( get_option('oxd_openid_'.$custom_script['value'].'_enable') == 1 );?> /><strong><?php echo $custom_script['name'];?></strong>
+                                                                <input type="checkbox" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> id="<?php echo $custom_script['value'];?>_enable" class="app_enable" name="<?php echo 'oxd_openid_'.$custom_script['value'].'_enable';?>" value="1" onchange="previewLoginIcons();"
+                                                                    <?php checked( get_option('gluu_oxd_openid_'.$custom_script['value'].'_enable') == 1 );?> /><strong><?php echo $custom_script['name'];?></strong>
                                                             </td>
                                                             <?php
                                                         }
@@ -737,14 +737,14 @@ function oxd_openid_login_config_info(){
                             <td>
                                 <div >
 
-                                    <input <?php if(!is_oxd_registered()) echo 'disabled'?> type="button" id="add_new_suctom_script"  value="Add acr"/>
+                                    <input <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> type="button" id="add_new_suctom_script"  value="Add acr"/>
                                     <input type="hidden" name="count_scripts" value="1" id="count_scripts">
                                     <div id="p_scents_script">
                                         <p>
-                                            <input <?php if(!is_oxd_registered()) echo 'disabled'?> type="text" style="margin-right: 5px " name="new_custom_script_name_1" size="30" placeholder="Display name (example Google+)" />
-                                            <input <?php if(!is_oxd_registered()) echo 'disabled'?> type="text" style="margin-right: 5px " name="new_custom_script_value_1" size="40" placeholder="ACR Value (script name in the Gluu Server)" />
+                                            <input <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> type="text" style="margin-right: 5px " name="new_custom_script_name_1" size="30" placeholder="Display name (example Google+)" />
+                                            <input <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> type="text" style="margin-right: 5px " name="new_custom_script_value_1" size="40" placeholder="ACR Value (script name in the Gluu Server)" />
                                             <input type="hidden" name="image_url_1" id="image_url_1" class="regular-text">
-                                            <input <?php if(!is_oxd_registered()) echo 'disabled'?> type="button" name="upload-btn" id="upload-btn_1" onclick="upload_this(1)" class="button-secondary" value="Upload app image (120x120) ">
+                                            <input <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> type="button" name="upload-btn" id="upload-btn_1" onclick="upload_this(1)" class="button-secondary" value="Upload app image (120x120) ">
                                         </p>
                                     </div>
                                 </div>
@@ -771,7 +771,7 @@ function oxd_openid_login_config_info(){
                                         <th><h3>Delete</h3></th>
                                     </tr>
                                     <?php
-                                    $custom_scripts = get_option('oxd_openid_custom_scripts');
+                                    $custom_scripts = get_option('gluu_oxd_openid_custom_scripts');
                                     $n = 0;
                                     foreach($custom_scripts as $custom_script){
                                         $n++;
@@ -781,7 +781,7 @@ function oxd_openid_login_config_info(){
                                             <td><?php echo $custom_script['name'];?></td>
                                             <td><?php echo $custom_script['value'];?></td>
                                             <td><img src="<?php echo $custom_script['image'];?>" width="40px" height="40px"/></td>
-                                            <td><input type="button" onclick="delete_custom_script('<?php echo $custom_script['value'];?>')" class="button button-primary button-large" <?php if(!is_oxd_registered()) echo 'disabled'?> value="Delete" name="set_oxd_config" /></td>
+                                            <td><input type="button" onclick="delete_custom_script('<?php echo $custom_script['value'];?>')" class="button button-primary button-large" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> value="Delete" name="set_oxd_config" /></td>
                                         </tr>
                                         <?php
                                     }
@@ -796,16 +796,16 @@ function oxd_openid_login_config_info(){
                     </table>
                 </fieldset>
                 <br/><br/><br/>
-                <input style="width: 100px" type="submit" class="button button-primary button-large" <?php if(!is_oxd_registered()) echo 'disabled'?> value="Save" name="set_oxd_config" />
+                <input style="width: 100px" type="submit" class="button button-primary button-large" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> value="Save" name="set_oxd_config" />
             </form>
         </div>
     </div>
     <?php
 }
-function oxd_openid_shortcode_info(){
+function gluu_oxd_openid_shortcode_info(){
     ?>
     <div class="oxd_openid_table_layout">
-        <?php if(!is_oxd_registered()) { ?>
+        <?php if(!gluu_is_oxd_registered()) { ?>
             <div class="mess_red">
                 Please enter gluu configuration to continue.
             </div>
@@ -816,9 +816,9 @@ function oxd_openid_shortcode_info(){
     </div>
     <?php
 }
-function oxd_openid_troubleshoot_info(){ ?>
+function gluu_oxd_openid_troubleshoot_info(){ ?>
     <div class="oxd_openid_table_layout">
-        <?php if(!is_oxd_registered()) { ?>
+        <?php if(!gluu_is_oxd_registered()) { ?>
             <div class="mess_red">
                 Please enter OXD configuration to continue.
             </div>
@@ -944,7 +944,7 @@ function oxd_openid_troubleshoot_info(){ ?>
                         <b>Example:</b> <code>[gluu_login]</code>
                         <h4 style="margin-bottom:0 !important">For Icons</h4>
                         You can use request attributes to customize the icons. All attributes are optional.<br>
-                        <b>Example:</b> <code>[gluu_login  shape="<?php echo get_option('oxd_openid_login_theme');?>" theme="<?php echo get_option('oxd_openid_login_custom_theme');?>" space="<?php echo get_option('oxd_login_icon_space')?>" size="<?php echo get_option('oxd_login_icon_custom_size')?>"]</code><br>
+                        <b>Example:</b> <code>[gluu_login  shape="<?php echo get_option('gluu_oxd_openid_login_theme');?>" theme="<?php echo get_option('gluu_oxd_openid_login_custom_theme');?>" space="<?php echo get_option('gluu_oxd_login_icon_space')?>" size="<?php echo get_option('gluu_oxd_login_icon_custom_size')?>"]</code><br>
 
                         <br/>
                         You can use a shortcode in a PHP file like this: &nbsp;&nbsp;
