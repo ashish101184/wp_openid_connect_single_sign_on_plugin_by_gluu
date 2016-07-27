@@ -1,9 +1,8 @@
 <?php
-define( 'PLUGIN_PATH', plugins_url( __FILE__ ) );
-include_once PLUGIN_PATH . '/oxd-rp/Get_authorization_url.php';
-include_once PLUGIN_PATH . '/oxd-rp/Get_tokens_by_code.php';
-include_once PLUGIN_PATH . '/oxd-rp/Get_user_info.php';
-include_once PLUGIN_PATH . '/oxd-rp/Logout.php';
+require '/oxd-rp/GetAuthorizationUrl.php';
+require '/oxd-rp/GetTokensByCode.php';
+require '/oxd-rp/GetUserInfo.php';
+require '/oxd-rp/Logout.php';
 
 if(gluu_is_oxd_registered()) {
 	/*

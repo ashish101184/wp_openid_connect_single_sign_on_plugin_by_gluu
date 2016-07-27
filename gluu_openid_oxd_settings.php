@@ -11,8 +11,8 @@
  */
 
 require('gluu_openid_oxd_settings_page.php');
-include_once dirname( __FILE__ ) . '/class-oxd-openid-login-widget.php';
-include_once dirname( __FILE__ ) . '/oxd-rp/Register_site.php';
+require '/class-oxd-openid-login-widget.php';
+require '/oxd-rp/RegisterSite.php';
 class gluu_OpenID_OXD {
 
 	function __construct() {
@@ -207,8 +207,8 @@ class gluu_OpenID_OXD {
 	}
 
 	function gluu_oxd_openid_add_gluu_login(){
-		if(!is_user_logged_in() && is_oxd_registered()){
-			$oxd_login_widget = new oxd_openid_login_wid();
+		if(!is_user_logged_in() && gluu_is_oxd_registered()){
+			$oxd_login_widget = new gluu_oxd_openid_login_wid();
 			$oxd_login_widget->openidloginForm();
 		}
 	}
@@ -312,7 +312,7 @@ class gluu_OpenID_OXD {
 				update_option('gluu_oxd_openid_message', 'Enter your oxd host port (Min. number 0, Max. number 65535)');
 				$this->gluu_oxd_openid_show_error_message();
 				return;
-			}else if(is_email( $_POST['email'] )) {
+			}else if(!is_email( $_POST['email'] )) {
 				update_option('gluu_oxd_openid_message', 'Please match the format of Email. No special characters are allowed.');
 				$this->gluu_oxd_openid_show_error_message();
 				return;
@@ -376,7 +376,7 @@ class gluu_OpenID_OXD {
 			}
 		}
 		else if( isset( $_POST['option'] ) and $_POST['option'] == "oxd_openid_config_info_hidden" ) {
-			if(is_oxd_registered()) {
+			if(gluu_is_oxd_registered()) {
 				$custom_scripts = get_option('gluu_oxd_openid_custom_scripts');
 				foreach($custom_scripts as $custom_script){
 					update_option( 'gluu_oxd_openid_'.$custom_script['value'].'_enable', isset( $_POST['oxd_openid_'.$custom_script['value'].'_enable']) ? $_POST['oxd_openid_'.$custom_script['value'].'_enable'] : 0);
@@ -474,7 +474,7 @@ class gluu_OpenID_OXD {
 			$this->gluu_oxd_openid_activating();
 		}
 		else if( isset( $_POST['option'] ) and $_POST['option'] == "oxd_openid_enable_apps" ) {
-			if(is_oxd_registered()) {
+			if(gluu_is_oxd_registered()) {
 				$custom_scripts = get_option('gluu_oxd_openid_custom_scripts');
 				foreach($custom_scripts as $custom_script){
 					update_option('gluu_oxd_openid_'.$custom_script['value'].'_enable', isset( $_POST['oxd_openid_'.$custom_script['value'].'_enable']) ? $_POST['oxd_openid_'.$custom_script['value'].'_enable'] : 0);
@@ -522,8 +522,8 @@ class gluu_OpenID_OXD {
 	}
 
 	public function gluu_oxd_get_output( $atts ){
-		if(is_oxd_registered()){
-			$gluu_widget = new oxd_openid_login_wid();
+		if(gluu_is_oxd_registered()){
+			$gluu_widget = new gluu_oxd_openid_login_wid();
 			$html = $gluu_widget->openidloginFormShortCode( $atts );
 			return $html;
 		}
