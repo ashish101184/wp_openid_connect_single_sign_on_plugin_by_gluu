@@ -1,8 +1,8 @@
 <?php
-require '/oxd-rp/GetAuthorizationUrl.php';
-require '/oxd-rp/GetTokensByCode.php';
-require '/oxd-rp/GetUserInfo.php';
-require '/oxd-rp/Logout.php';
+require GLUU_PLUGIN_PATH.'/oxd-rp/GetAuthorizationUrl.php';
+require GLUU_PLUGIN_PATH.'/oxd-rp/GetTokensByCode.php';
+require GLUU_PLUGIN_PATH.'/oxd-rp/GetUserInfo.php';
+require GLUU_PLUGIN_PATH.'/oxd-rp/Logout.php';
 
 if(gluu_is_oxd_registered()) {
 	/*
@@ -12,9 +12,9 @@ if(gluu_is_oxd_registered()) {
 
 		public function __construct() {
 			parent::__construct(
-					'gluu_oxd_openid_login_wid',
-					'OpenID Connect Single Sign On (SSO) Widget',
-					array( 'description' => __( 'Login using Social Apps and Gluu Apps .', 'flw' ), )
+				'gluu_oxd_openid_login_wid',
+				'OpenID Connect Single Sign On (SSO) Widget',
+				array( 'description' => __( 'Login using Social Apps and Gluu Apps .', 'flw' ), )
 			);
 		}
 
@@ -180,23 +180,23 @@ if(gluu_is_oxd_registered()) {
 			<script type="text/javascript">
 				function oxdOpenIdLogin(app_name) {
 					<?php
-                        if(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off'){
-                            $http = "https://";
-                        } else {
-                            $http =  "http://";
-                        }
-                        if ( strpos($_SERVER['REQUEST_URI'],'wp-login.php') !== FALSE){
-                                $redirect_url = site_url() . '/wp-login.php?option=getOxdSocialLogin&app_name=';
+					if(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off'){
+						$http = "https://";
+					} else {
+						$http =  "http://";
+					}
+					if ( strpos($_SERVER['REQUEST_URI'],'wp-login.php') !== FALSE){
+						$redirect_url = site_url() . '/wp-login.php?option=getOxdSocialLogin&app_name=';
 
-                        }else{
-                                $redirect_url = $http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-                                if(strpos($redirect_url, '?') !== false) {
-                                    $redirect_url .= '&option=getOxdSocialLogin&app_name=';
-                                } else {
-                                    $redirect_url .= '?option=getOxdSocialLogin&app_name=';
-                                }
-                        }
-                    ?>
+					}else{
+						$redirect_url = $http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+						if(strpos($redirect_url, '?') !== false) {
+							$redirect_url .= '&option=getOxdSocialLogin&app_name=';
+						} else {
+							$redirect_url .= '?option=getOxdSocialLogin&app_name=';
+						}
+					}
+					?>
 					window.location.href = '<?php echo $redirect_url; ?>' + app_name;
 				}
 			</script>
@@ -494,16 +494,16 @@ if(gluu_is_oxd_registered()) {
 					$user 	= get_user_by('email', $reg_email );
 					$user_id 	= $user->ID;
 					wp_update_user(
-							array(
-									'ID' => $user_id,
-									'user_login'  =>  $username,
-									'user_nicename'  =>  $reg_nikname,
-									'user_email'    =>  $reg_email,
-									'display_name' => $reg_display_name,
-									'first_name' => $reg_first_name,
-									'last_name' => $reg_last_name,
-									'user_url' => $reg_website,
-							)
+						array(
+							'ID' => $user_id,
+							'user_login'  =>  $username,
+							'user_nicename'  =>  $reg_nikname,
+							'user_email'    =>  $reg_email,
+							'display_name' => $reg_display_name,
+							'first_name' => $reg_first_name,
+							'last_name' => $reg_last_name,
+							'user_url' => $reg_website,
+						)
 					);
 					if(get_option('gluu_oxdOpenId_gluu_login_avatar') && isset($reg_avatar))
 						update_user_meta($user_id, 'oxdOpenId_user_avatar', $reg_avatar);
@@ -513,16 +513,16 @@ if(gluu_is_oxd_registered()) {
 					$user 	= get_user_by('login', $username );
 					$user_id 	= $user->ID;
 					wp_update_user(
-							array(
-									'ID' => $user_id,
-									'user_login'  =>  $username,
-									'user_nicename'  =>  $reg_nikname,
-									'user_email'    =>  $reg_email,
-									'display_name' => $reg_display_name,
-									'first_name' => $reg_first_name,
-									'last_name' => $reg_last_name,
-									'user_url' => $reg_website,
-							)
+						array(
+							'ID' => $user_id,
+							'user_login'  =>  $username,
+							'user_nicename'  =>  $reg_nikname,
+							'user_email'    =>  $reg_email,
+							'display_name' => $reg_display_name,
+							'first_name' => $reg_first_name,
+							'last_name' => $reg_last_name,
+							'user_url' => $reg_website,
+						)
 					);
 					if(get_option('gluu_oxdOpenId_gluu_login_avatar') && isset($reg_avatar))
 						update_user_meta($user_id, 'oxdOpenId_user_avatar', $reg_avatar);
@@ -532,14 +532,14 @@ if(gluu_is_oxd_registered()) {
 					if(get_option('gluu_oxd_openid_auto_register_enable')) {
 						$random_password 	= wp_generate_password( 10, false );
 						$userdata = array(
-								'user_login'  =>  $username,
-								'user_nicename'  =>  $reg_nikname,
-								'user_email'    =>  $reg_email,
-								'user_pass'   =>  $random_password,
-								'display_name' => $reg_display_name,
-								'first_name' => $reg_first_name,
-								'last_name' => $reg_last_name,
-								'user_url' => $reg_website,
+							'user_login'  =>  $username,
+							'user_nicename'  =>  $reg_nikname,
+							'user_email'    =>  $reg_email,
+							'user_pass'   =>  $random_password,
+							'display_name' => $reg_display_name,
+							'first_name' => $reg_first_name,
+							'last_name' => $reg_last_name,
+							'user_url' => $reg_website,
 						);
 						$user_id 	= wp_insert_user( $userdata);
 						$user	= get_user_by('email', $reg_email );

@@ -9,10 +9,12 @@
  * Author URI: https://gluu.org
  * License: GPL3
  */
+define( 'GLUU_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
-require('gluu_openid_oxd_settings_page.php');
-require '/class-oxd-openid-login-widget.php';
-require '/oxd-rp/RegisterSite.php';
+require GLUU_PLUGIN_PATH.'gluu_openid_oxd_settings_page.php';
+require GLUU_PLUGIN_PATH.'/class-oxd-openid-login-widget.php';
+require GLUU_PLUGIN_PATH.'/oxd-rp/RegisterSite.php';
+
 class gluu_OpenID_OXD {
 
 	function __construct() {
@@ -484,26 +486,26 @@ class gluu_OpenID_OXD {
 				update_option('gluu_oxd_openid_default_comment_enable', isset( $_POST['oxd_openid_default_comment_enable']) ? $_POST['oxd_openid_default_comment_enable'] : 0);
 				update_option('gluu_oxd_openid_woocommerce_login_form', isset( $_POST['oxd_openid_woocommerce_login_form']) ? $_POST['oxd_openid_woocommerce_login_form'] : 0);
 				//Redirect URL
-				update_option('gluu_oxd_openid_login_redirect', $_POST['oxd_openid_login_redirect']);
-				update_option('gluu_oxd_openid_login_redirect_url', $_POST['oxd_openid_login_redirect_url'] );
+				update_option('gluu_oxd_openid_login_redirect', isset( $_POST['oxd_openid_login_redirect']) ? $_POST['oxd_openid_login_redirect'] : 0);
+				update_option('gluu_oxd_openid_login_redirect_url', isset( $_POST['oxd_openid_login_redirect_url']) ? $_POST['oxd_openid_login_redirect_url'] : 0);
 				//Logout Url
 				update_option('gluu_oxd_openid_logout_redirection_enable', isset( $_POST['oxd_openid_logout_redirection_enable']) ? $_POST['oxd_openid_logout_redirection_enable'] : 0);
-				update_option('gluu_oxd_openid_logout_redirect', $_POST['oxd_openid_logout_redirect']);
-				update_option('gluu_oxd_openid_logout_redirect_url', $_POST['oxd_openid_logout_redirect_url'] );
+				update_option('gluu_oxd_openid_logout_redirect', isset( $_POST['oxd_openid_logout_redirect']) ? $_POST['oxd_openid_logout_redirect'] : 'currentpage');
+				update_option('gluu_oxd_openid_logout_redirect_url', isset( $_POST['oxd_openid_logout_redirect_url']) ? $_POST['oxd_openid_logout_redirect_url'] : 0);
 				//auto register
 				update_option('gluu_oxd_openid_auto_register_enable', isset( $_POST['oxd_openid_auto_register_enable']) ? $_POST['oxd_openid_auto_register_enable'] : 0);
-				update_option('gluu_oxd_openid_register_disabled_message', $_POST['oxd_openid_register_disabled_message']);
-				update_option('gluu_oxd_openid_login_widget_customize_text',$_POST['oxd_openid_login_widget_customize_text'] );
-				update_option('gluu_oxd_openid_login_button_customize_text',$_POST['oxd_openid_login_button_customize_text'] );
-				update_option('gluu_oxd_openid_login_theme',$_POST['oxd_openid_login_theme'] );
+				update_option('gluu_oxd_openid_register_disabled_message', isset( $_POST['oxd_openid_register_disabled_message']) ? $_POST['oxd_openid_register_disabled_message'] : 'Registration is disabled for this website. Please contact the administrator for any queries.');
+				update_option('gluu_oxd_openid_login_widget_customize_text',isset( $_POST['oxd_openid_login_widget_customize_text']) ? $_POST['oxd_openid_login_widget_customize_text'] : 'Connect with:');
+				update_option('gluu_oxd_openid_login_button_customize_text',isset( $_POST['oxd_openid_login_button_customize_text']) ? $_POST['oxd_openid_login_button_customize_text'] : 'Login with' );
+				update_option('gluu_oxd_openid_login_theme',isset( $_POST['oxd_openid_login_theme']) ? $_POST['oxd_openid_login_theme'] : 'oval');
 				update_option('gluu_oxd_openid_message', 'Your settings are saved successfully.' );
 				//customization of icons
-				update_option('gluu_oxd_login_icon_custom_size',$_POST['oxd_login_icon_custom_size'] );
-				update_option('gluu_oxd_login_icon_space',$_POST['oxd_login_icon_space'] );
-				update_option('gluu_oxd_login_icon_custom_width',$_POST['oxd_login_icon_custom_width'] );
-				update_option('gluu_oxd_login_icon_custom_height',$_POST['oxd_login_icon_custom_height'] );
-				update_option('gluu_oxd_openid_login_custom_theme',$_POST['oxd_openid_login_custom_theme'] );
-				update_option('gluu_oxd_login_icon_custom_color', $_POST['oxd_login_icon_custom_color'] );
+				update_option('gluu_oxd_login_icon_custom_size',isset( $_POST['oxd_login_icon_custom_size']) ? $_POST['oxd_login_icon_custom_size'] : 40 );
+				update_option('gluu_oxd_login_icon_space',isset( $_POST['oxd_login_icon_space']) ? $_POST['oxd_login_icon_space'] : 5 );
+				update_option('gluu_oxd_login_icon_custom_width',isset( $_POST['oxd_login_icon_custom_width']) ? $_POST['oxd_login_icon_custom_width'] : 200 );
+				update_option('gluu_oxd_login_icon_custom_height',isset( $_POST['oxd_login_icon_custom_height']) ? $_POST['oxd_login_icon_custom_height'] : 40 );
+				update_option('gluu_oxd_openid_login_custom_theme',isset( $_POST['oxd_openid_login_custom_theme']) ? $_POST['oxd_openid_login_custom_theme'] : 'default' );
+				update_option('gluu_oxd_login_icon_custom_color', isset( $_POST['oxd_openid_login_custooxd_login_icon_custom_colorm_theme']) ? $_POST['oxd_login_icon_custom_color'] :'2B41FF');
 				// avatar
 				update_option('gluu_oxdOpenId_gluu_login_avatar', isset( $_POST['oxdOpenId_gluu_login_avatar']) ? $_POST['oxdOpenId_gluu_login_avatar'] : 0);
 				//Attribute collection
