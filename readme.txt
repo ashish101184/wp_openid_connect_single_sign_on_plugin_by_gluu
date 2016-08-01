@@ -48,7 +48,7 @@ All other authentication applications are supported through in website https://w
 = Website =
 *   **Gluu server site :** https://www.gluu.org
 *   **Documentation :** https://oxd.gluu.org/docs/plugin/wordpress/
-*   **Support :** https://www.support.gluu.org
+*   **Support :** https://support.gluu.org
 *   **Deploy :** https://www.gluu.org/deploy
 
 == Installation ==
