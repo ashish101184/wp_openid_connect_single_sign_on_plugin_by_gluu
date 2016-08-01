@@ -214,84 +214,7 @@ if(gluu_is_oxd_registered()) {
 
 	}
 
-	function gluu_oxd_openid_start_session() {
-		if( !session_id() ) {
-			session_start();
-		}
-	}
 
-	function gluu_oxd_openid_end_session() {
-		session_start();
-
-		$config_option = get_option( 'gluu_oxd_config' );
-		if(!empty($_SESSION['user_oxd_id_token'])){
-			if(get_option('gluu_oxd_id') && $_SESSION['user_oxd_id_token']){
-				if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-					if(exec('netstat -aon |find/i "listening" |find "'.$config_option['oxd_host_port'].'"')){
-						$logout = new Logout();
-						$logout->setRequestOxdId(get_option('gluu_oxd_id'));
-						$logout->setRequestIdToken($_COOKIE['user_oxd_id_token']);
-						$logout->setRequestPostLogoutRedirectUri($config_option['logout_redirect_uri']);
-						$logout->setRequestSessionState($_COOKIE['session_states']);
-						$logout->setRequestState($_COOKIE['states']);
-						$logout->request();
-						echo '<script>
-						var delete_cookie = function(name) {
-							document.cookie = name + \'=;expires=Thu, 01 Jan 1970 00:00:01 GMT;\';
-						};
-						delete_cookie(\'user_oxd_access_token\');
-						delete_cookie(\'user_oxd_id_token\');
-						delete_cookie(\'session_states\');
-						delete_cookie(\'states\');
-					</script>';
-						unset($_SESSION['user_oxd_access_token']);
-						unset($_SESSION['user_oxd_id_token']);
-						unset($_SESSION['session_states']);
-						unset($_SESSION['states']);
-
-						unset($_COOKIE['user_oxd_access_token']);
-						unset($_COOKIE['user_oxd_id_token']);
-						unset($_COOKIE['session_states']);
-						unset($_COOKIE['states']);
-						wp_redirect( $logout->getResponseObject()->data->uri );
-						exit;
-					}
-				} else {
-					if(exec('netstat -tulpn | grep :'.$config_option['oxd_host_port'])){
-						$logout = new Logout();
-						$logout->setRequestOxdId(get_option('gluu_oxd_id'));
-						$logout->setRequestIdToken($_COOKIE['user_oxd_id_token']);
-						$logout->setRequestPostLogoutRedirectUri($config_option['logout_redirect_uri']);
-						$logout->setRequestSessionState($_COOKIE['session_states']);
-						$logout->setRequestState($_COOKIE['states']);
-						$logout->request();
-						echo '<script>
-						var delete_cookie = function(name) {
-							document.cookie = name + \'=;expires=Thu, 01 Jan 1970 00:00:01 GMT;\';
-						};
-						delete_cookie(\'user_oxd_access_token\');
-						delete_cookie(\'user_oxd_id_token\');
-						delete_cookie(\'session_states\');
-						delete_cookie(\'states\');
-					</script>';
-						unset($_SESSION['user_oxd_access_token']);
-						unset($_SESSION['user_oxd_id_token']);
-						unset($_SESSION['session_states']);
-						unset($_SESSION['states']);
-						unset($_COOKIE['user_oxd_access_token']);
-						unset($_COOKIE['user_oxd_id_token']);
-						unset($_COOKIE['session_states']);
-						unset($_COOKIE['states']);
-						wp_redirect( $logout->getResponseObject()->data->uri );
-						exit;
-					}
-				}
-
-			}
-
-		}
-
-	}
 	function gluu_oxd_openid_logout_validate()
 	{
 		if (isset($_REQUEST['option']) and strpos($_REQUEST['option'], 'allLogout') !== false && !isset($_REQUEST['state'])) {
@@ -637,8 +560,6 @@ if(gluu_is_oxd_registered()) {
 	add_action( 'widgets_init', create_function( '', 'register_widget( "gluu_oxd_openid_login_wid" );' ) );
 	add_action( 'init', 'gluu_oxd_openid_login_validate' );
 	add_action( 'init', 'gluu_oxd_openid_logout_validate' );
-	add_action( 'init', 'gluu_oxd_openid_start_session' );
-	add_action( 'wp_logout', 'gluu_oxd_openid_end_session' );
 }
 
 ?>
