@@ -69,11 +69,11 @@ jQuery(document).ready(function(){
         jQuery("#custom_scope_table").toggle();
     });
 });
-function delete_custom_script(val){
+function delete_custom_script(val, nonce){
     jQuery.ajax({
         url: window.location,
         type: 'POST',
-        data:{option:'oxd_openid_config_info_hidden', delete_value:val},
+        data:{option:'oxd_openid_config_info_hidden', custom_nonce:nonce, delete_value:val},
         success: function(result){
             if(result){
                 location.reload();
@@ -82,11 +82,11 @@ function delete_custom_script(val){
             }
         }});
 }
-function delete_scopes(val){
+function delete_scopes(val, nonce){
     jQuery.ajax({
         url: window.location,
         type: 'POST',
-        data:{option:'oxd_openid_config_info_hidden', delete_scope:val},
+        data:{option:'oxd_openid_config_info_hidden', custom_nonce:nonce, delete_scope:val},
         success: function(result){
             if(result){
                 location.reload();

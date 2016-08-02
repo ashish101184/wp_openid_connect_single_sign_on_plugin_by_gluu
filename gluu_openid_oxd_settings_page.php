@@ -10,6 +10,7 @@ function gluu_is_oxd_registered() {
     }
 }
 function gluu_oxd_register_openid() {
+    $custom_nonce = wp_create_nonce('validating-nonce-value');
     if( isset( $_GET[ 'tab' ]) && $_GET[ 'tab' ] !== 'register' ) {
         $active_tab = $_GET[ 'tab' ];
     } else {
@@ -33,14 +34,14 @@ function gluu_oxd_register_openid() {
                         <?php
                         if ( $active_tab == 'register') {
                             if ( !gluu_is_oxd_registered()) {
-                                gluu_oxd_openid_show_new_registration_page();
+                                gluu_oxd_openid_show_new_registration_page($custom_nonce);
                             }else{
-                                gluu_oxd_openid_show_new_registration__restet_page();
+                                gluu_oxd_openid_show_new_registration__restet_page($custom_nonce);
                             }
                         }else if($active_tab == 'login_config') {
-                            gluu_oxd_openid_login_config_info();
+                            gluu_oxd_openid_login_config_info($custom_nonce);
                         } else if($active_tab == 'login'){
-                            gluu_oxd_openid_apps_config();
+                            gluu_oxd_openid_apps_config($custom_nonce);
                         }else if($active_tab == 'help') {
                             gluu_oxd_openid_troubleshoot_info();
                         }
@@ -52,13 +53,14 @@ function gluu_oxd_register_openid() {
     </div>
     <?php
 }
-function gluu_oxd_openid_show_new_registration_page() {
+function gluu_oxd_openid_show_new_registration_page($custom_nonce) {
     update_option ( 'oxd_openid_new_registration', 'true' );
     global $current_user;
     get_currentuserinfo();
     ?>
     <form name="f" method="post" action="" id="register-form">
         <input type="hidden" name="option" value="oxd_openid_connect_register_site_oxd" />
+        <input type="hidden" name="custom_nonce" value="<?php echo $custom_nonce; ?>" />
         <div class="oxd_openid_table_layout">
             <?php if(!gluu_is_oxd_registered()) { ?>
                 <div class="mess_red">
@@ -140,14 +142,14 @@ function gluu_oxd_openid_show_new_registration_page() {
     </form>
     <?php
 }
-function gluu_oxd_openid_show_new_registration__restet_page() {
+function gluu_oxd_openid_show_new_registration__restet_page($custom_nonce) {
     update_option ( 'oxd_openid_new_registration', 'true' );
     global $current_user;
     get_currentuserinfo();
     ?>
     <form name="f" method="post" action="" id="register-form">
         <input type="hidden" name="option" value="oxd_openid_reset_config" />
-        <?php wp_nonce_field( 'name_of_my_action', 'name_of_nonce_field' ); ?>
+        <input type="hidden" name="custom_nonce" value="<?php echo $custom_nonce; ?>" />
         <div class="oxd_openid_table_layout">
             <fieldset style="border: 2px solid #53cc6b;">
                 <legend><div class="about">
@@ -175,10 +177,11 @@ function gluu_oxd_openid_show_new_registration__restet_page() {
     </form>
     <?php
 }
-function gluu_oxd_openid_apps_config() {
+function gluu_oxd_openid_apps_config($custom_nonce) {
     ?>
     <form id="form-apps" name="form-apps" method="post" action="">
         <input type="hidden" name="option" value="oxd_openid_enable_apps" />
+        <input type="hidden" name="custom_nonce" value="<?php echo $custom_nonce; ?>" />
         <div class="oxd_openid_table_layout">
             <?php if(!gluu_is_oxd_registered()) { ?>
                 <div class="mess_red">
@@ -570,7 +573,7 @@ function gluu_oxd_openid_apps_config() {
     </div>
     <?php
 }
-function gluu_oxd_openid_login_config_info(){
+function gluu_oxd_openid_login_config_info($custom_nonce){
     wp_enqueue_script('jquery');
     wp_enqueue_media();
     wp_enqueue_script( 'oxd_scope_custom_script',plugins_url('includes/js/oxd_scope_custom_script.js', __FILE__), array('jquery'));
@@ -587,7 +590,7 @@ function gluu_oxd_openid_login_config_info(){
         <div>
             <form action="" method="post">
                 <input type="hidden" name="option" value="oxd_openid_config_info_hidden" />
-
+                <input type="hidden" name="custom_nonce" value="<?php echo $custom_nonce; ?>" />
                 <br/>
                 <fieldset style="border: 2px solid #53cc6b;">
                     <legend><div class="about">
@@ -655,7 +658,7 @@ function gluu_oxd_openid_login_config_info(){
                                             <td><?php echo $custom_script;?></td>
                                             <td>
                                                 <?php if($custom_script!='openid'){?>
-                                                    <input type="button" onclick="delete_scopes('<?php echo $custom_script;?>')" class="button button-primary button-large" <?php if(!gluu_is_oxd_registered() || $custom_script=='openid') echo 'disabled'?> value="Delete" name="set_oxd_config" />
+                                                    <input type="button" onclick="delete_scopes('<?php echo $custom_script;?>','<?php echo $custom_nonce;?>')" class="button button-primary button-large" <?php if(!gluu_is_oxd_registered() || $custom_script=='openid') echo 'disabled'?> value="Delete" name="set_oxd_config" />
                                                 <?php }?>
                                             </td>
                                         </tr>
@@ -782,7 +785,7 @@ function gluu_oxd_openid_login_config_info(){
                                             <td><?php echo $custom_script['name'];?></td>
                                             <td><?php echo $custom_script['value'];?></td>
                                             <td><img src="<?php echo $custom_script['image'];?>" width="40px" height="40px"/></td>
-                                            <td><input type="button" onclick="delete_custom_script('<?php echo $custom_script['value'];?>')" class="button button-primary button-large" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> value="Delete" name="set_oxd_config" /></td>
+                                            <td><input type="button" onclick="delete_custom_script('<?php echo $custom_script['value'];?>', '<?php echo $custom_nonce;?>')" class="button button-primary button-large" <?php if(!gluu_is_oxd_registered()) echo 'disabled'?> value="Delete" name="set_oxd_config" /></td>
                                         </tr>
                                         <?php
                                     }
