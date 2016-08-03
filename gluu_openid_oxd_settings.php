@@ -445,20 +445,20 @@ class gluu_OpenID_OXD {
 								}
 							}
 							if (isset($_POST['count_scripts'])) {
-								for ($i = 1; $i <= $_POST['count_scripts']; $i++) {
+								for ($i = 1; $i <= intval($_POST['count_scripts']); $i++) {
 									if (isset($_POST['new_custom_script_name_' . $i]) && !empty($_POST['new_custom_script_name_' . $i]) && isset($_POST['new_custom_script_value_' . $i]) && !empty($_POST['new_custom_script_value_' . $i]) && isset($_POST['image_url_' . $i]) && !empty($_POST['image_url_' . $i])) {
 										$custom_scripts = get_option('gluu_oxd_openid_custom_scripts');
 										foreach ($custom_scripts as $custom_script) {
-											if ($custom_script['value'] == $_POST['new_custom_script_value_' . $i] || $custom_script['name'] == $_POST['new_custom_script_name_' . $i]) {
+											if ($custom_script['value'] == sanitize_text_field($_POST['new_custom_script_value_' . $i]) || $custom_script['name'] == sanitize_text_field($_POST['new_custom_script_name_' . $i])) {
 												$error = false;
 												array_push($error_array, $i);
 											}
 										}
 										if ($error) {
-											array_push($custom_scripts, array('name' => $_POST['new_custom_script_name_' . $i], 'image' => $_POST['image_url_' . $i], 'value' => $_POST['new_custom_script_value_' . $i]));
+											array_push($custom_scripts, array('name' => sanitize_text_field($_POST['new_custom_script_name_' . $i]), 'image' => sanitize_text_field($_POST['image_url_' . $i]), 'value' => sanitize_text_field($_POST['new_custom_script_value_' . $i])));
 											update_option('gluu_oxd_openid_custom_scripts', $custom_scripts);
 										} else {
-											update_option('gluu_oxd_openid_message', 'Name = ' . $_POST['new_custom_script_name_' . $i] . ' or value = ' . $_POST['new_custom_script_value_' . $i] . ' is exist.');
+											update_option('gluu_oxd_openid_message', 'Name = ' . sanitize_text_field($_POST['new_custom_script_name_' . $i]) . ' or value = ' . sanitize_text_field($_POST['new_custom_script_value_' . $i]) . ' is exist.');
 											$this->gluu_oxd_openid_show_error_message();
 										}
 									}
@@ -467,7 +467,7 @@ class gluu_OpenID_OXD {
 							if (!$error) {
 								$error_message = '';
 								foreach ($error_array as $error_a) {
-									$error_message .= 'Name = ' . $_POST['new_custom_script_name_' . $error_a] . ' or value = ' . $_POST['new_custom_script_value_' . $error_a] . ' is exist.<br/>';
+									$error_message .= 'Name = ' . sanitize_text_field($_POST['new_custom_script_name_' . $error_a]) . ' or value = ' . sanitize_text_field($_POST['new_custom_script_value_' . $error_a]) . ' is exist.<br/>';
 								}
 								update_option('gluu_oxd_openid_message', $error_message);
 								$this->gluu_oxd_openid_show_error_message();
