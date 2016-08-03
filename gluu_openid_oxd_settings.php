@@ -396,7 +396,7 @@ class gluu_OpenID_OXD {
 							update_option('gluu_oxd_config', $oxd_config);
 
 							if (!empty($_POST['new_scope']) && isset($_POST['new_scope'])) {
-								foreach ($_POST['new_scope'] as $scope) {
+								foreach (array_map( 'sanitize_text_field', wp_unslash($_POST['new_scope'])) as $scope) {
 									if ($scope) {
 										$get_scopes = get_option('gluu_oxd_openid_scops');
 										array_push($get_scopes, $scope);
@@ -409,7 +409,7 @@ class gluu_OpenID_OXD {
 								$check = false;
 								$up_cust_sc = array();
 								foreach ($custom_scripts as $custom_script) {
-									if ($custom_script == $_POST['delete_scope']) {
+									if ($custom_script == sanitize_text_field($_POST['delete_scope'])) {
 										$check = true;
 									} else {
 										array_push($up_cust_sc, $custom_script);
@@ -429,7 +429,7 @@ class gluu_OpenID_OXD {
 								$check = false;
 								$up_cust_sc = array();
 								foreach ($custom_scripts as $custom_script) {
-									if ($custom_script['value'] == $_POST['delete_value']) {
+									if ($custom_script['value'] == sanitize_text_field($_POST['delete_value'])) {
 										$check = true;
 									} else {
 										array_push($up_cust_sc, $custom_script);
