@@ -328,15 +328,10 @@ class gluu_OpenID_OXD {
 							update_option('gluu_oxd_openid_admin_email', $email);
 							$oxd_host_port = intval($_POST['oxd_host_port']);
 						}
-						if (empty($_POST['users_can_register']) || !empty($_POST['users_can_register']) && trim($_POST['default_role']) != 1) {
+						if (empty($_POST['users_can_register'])) {
 							update_option('gluu_oxd_openid_message', '<strong>ERROR</strong>: Signup has been disabled. Only members of this site can comment.');
 						} else {
 							update_option('users_can_register', sanitize_text_field($_POST['users_can_register']));
-						}
-						if (empty($_POST['default_role']) || !empty($_POST['default_role']) && trim($_POST['default_role']) == '') {
-							update_option('gluu_oxd_openid_message', '<strong>ERROR</strong>: You must include a role.');
-						} else {
-							update_option('default_role', sanitize_text_field($_POST['default_role']));
 						}
 						$config_option = array(
 							"oxd_host_ip" => '127.0.0.1',

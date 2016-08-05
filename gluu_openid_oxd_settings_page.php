@@ -106,19 +106,6 @@ function gluu_oxd_openid_show_new_registration_page($custom_nonce) {
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="default_role"><b><font color="#FF0000">*</font>New User Default Role:</b></label></td>
-                    <td>
-                        <select name="default_role" id="default_role">
-                            <option <?php if(get_option('default_role') == "author"){ echo "selected='selected'";} ?> value="author">Author</option>
-                            <option <?php if(get_option('default_role') == "subscriber"){ echo "selected='selected'";} ?> value="subscriber">Subscriber</option>
-                            <option <?php if(get_option('default_role') == "contributor"){ echo "selected='selected'";} ?> value="contributor">Contributor</option>
-                            <option <?php if(get_option('default_role') == "editor"){ echo "selected='selected'";} ?> value="editor">Editor</option>
-                            <option <?php if(get_option('default_role') == "administrator"){ echo "selected='selected'";} ?> value="administrator">Administrator</option>
-                        </select>
-                        <br/><br/>
-                    </td>
-                </tr>
-                <tr>
                     <td><b><font color="#FF0000">*</font>Admin Email:</b></td>
                     <td><input class="oxd_openid_table_textbox" type="email" name="email"
                                required placeholder="person@example.com"
