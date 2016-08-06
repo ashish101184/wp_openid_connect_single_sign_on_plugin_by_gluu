@@ -106,6 +106,13 @@ function gluu_oxd_openid_show_new_registration_page($custom_nonce) {
                     </td>
                 </tr>
                 <tr>
+                    <td><label for="default_role"><b><font color="#FF0000">*</font>New User Default Role:</b></label></td>
+                    <td>
+                        <select name="default_role" id="default_role"><?php wp_dropdown_roles( get_option('default_role') ); ?></select>
+                        <br/><br/>
+                    </td>
+                </tr>
+                <tr>
                     <td><b><font color="#FF0000">*</font>Admin Email:</b></td>
                     <td><input class="oxd_openid_table_textbox" type="email" name="email"
                                required placeholder="person@example.com"
