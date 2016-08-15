@@ -8,29 +8,29 @@ require_once 'ClientOXDRP.php';
 class GetUserInfo extends ClientOXDRP
 {
     /**start parameter for request!**/
-        private $request_oxd_id = null;
-        private $request_access_token = null;
+    private $request_oxd_id = null;
+    private $request_access_token = null;
     /**end request parameter**/
 
     /**start parameter for response!**/
-        private $response_claims;
-        private $response_sub;
-        private $response_name;
-        private $response_given_name;
-        private $response_family_name;
-        private $response_middle_name;
-        private $response_nickname;
-        private $response_preferred_username;
-        private $response_profile;
-        private $response_picture;
-        private $response_website;
-        private $response_email;
-        private $response_gender;
-        private $response_birthdate;
-        private $response_zoneinfo;
-        private $response_phone_number;
-        private $response_address;
-        private $response_updated_at;
+    private $response_claims;
+    private $response_sub;
+    private $response_name;
+    private $response_given_name;
+    private $response_family_name;
+    private $response_middle_name;
+    private $response_nickname;
+    private $response_preferred_username;
+    private $response_profile;
+    private $response_picture;
+    private $response_website;
+    private $response_email;
+    private $response_gender;
+    private $response_birthdate;
+    private $response_zoneinfo;
+    private $response_phone_number;
+    private $response_address;
+    private $response_updated_at;
 
     /**end response parameter**/
 

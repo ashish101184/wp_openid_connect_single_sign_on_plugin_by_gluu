@@ -613,7 +613,7 @@ function gluu_oxd_openid_login_config_info($custom_nonce){
                                 </div>
                             </td>
                         </tr>
-                        <tr style="display: none">
+                        <tr >
                             <th scope="row">
                                 Add scopes
                             </th>
@@ -831,11 +831,11 @@ function gluu_oxd_openid_troubleshoot_info(){ ?>
                     <p>In details how to use plugin step by step.</p>
                     <p>Plugin will not be working if your host does not have https://.</p>
                     <h2><a id="Step_1_Install_Gluuserver_13"></a>Step 1. Install Gluu-server</h2>
-                    <p>(version 2.4.2)</p>
+                    <p>(version 2.4.3)</p>
                     <p>If you want to use external gluu server, You can not do this step.</p>
                     <p><a target="_blank" href="https://www.gluu.org/docs/deployment/">Gluu-server installation gide</a>.</p>
                     <h2><a id="Step_2_Download_oxDserver_21"></a>Step 2. Download oxd-server</h2>
-                    <p><a target="_blank" href="https://ox.gluu.org/maven/org/xdi/oxd-server/2.4.2.Final/oxd-server-2.4.2.Final-distribution.zip">Download oxd-server-2.4.2</a>.</p>
+                    <p><a target="_blank" href="https://ox.gluu.org/maven/org/xdi/oxd-server/2.4.3.Final/oxd-server-2.4.3.Final-distribution.zip">Download oxd-server-2.4.3</a>.</p>
                     <h2><a id="Step_3_Unzip_and_run_oXDserver_31"></a>Step 3. Unzip and run oxd-server</h2>
                     <ol>
                         <li>Unzip your oxD-server.</li>
@@ -848,8 +848,9 @@ function gluu_oxd_openid_troubleshoot_info(){ ?>
                         <li>For Windows environment, run oxd-start.bat.</li>
                         <li>After the server starts, go to Step 4.</li>
                     </ol>
+                    <p><a target="_blank" href="https://oxd.gluu.org/docs/oxdserver/install/">Oxd-server installation gide</a>.</p>
                     <h2><a id="Step_6_General_73"></a>Step 4. General</h2>
-                    <p><img src="<?php echo plugins_url('docu/421.png', __FILE__)?>" alt="General"></p>
+                    <p><img src="<?php echo plugins_url('docu/1.png', __FILE__)?>" alt="General"></p>
                     <ol>
                         <li>Admin Email: please add your or admin email address for registrating site in Gluu server.</li>
                         <li>Port number: choose that port which is using oxd-server (see in oxd-server/conf/oxd-conf.json file).</li>
@@ -864,8 +865,8 @@ function gluu_oxd_openid_troubleshoot_info(){ ?>
                     <p>You can look all scopes in your gluu server / OpenID Connect / Scopes and understand the meaning of  every scope.
                         Scopes are need for getting loged in users information from gluu server.
                         Pay attention to that, which scopes you are using that are switched on in your gluu server.</p>
-                    <p>You can only enable, disable and delete scope.
-                        <img src="<?php echo plugins_url('docu/3.png', __FILE__)?>" alt="Scopes1"></p>
+                    <p>You can add, enable, disable and delete scope.
+                        <img src="<?php echo plugins_url('docu/4.png', __FILE__)?>" alt="Scopes1"></p>
                     <h3><a id="Custom_scripts_104"></a>Custom scripts.</h3>
                     <p><img src="<?php echo plugins_url('docu/5.png', __FILE__)?>" alt="Customscripts"></p>
                     <p>You can look all custom scripts in your gluu server / Configuration / Manage Custom Scripts / and enable login type, which type you want.

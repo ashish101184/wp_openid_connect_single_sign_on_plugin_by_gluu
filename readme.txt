@@ -8,7 +8,7 @@ Stable tag: 2.4.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Login, comment, register using Gluu server. EASIEST to configure.
+This plugin will enable you to authenticate users against any standard OpenID Connect Provider.
 
 == Description ==
 = OpenID Connect Single Sign On (SSO) Plugin By Gluu =
@@ -28,7 +28,7 @@ Customize login icons using a range of UI options like shape, size and theme. Ch
 = Single sign-on =
 Single Sign-On using login creates a single authentication system for multiple web properties allowing users to navigate websites with a single account.
 
-All other authentication applications are supported through in website https://www.support.gluu.org.
+All other authentication applications are supported through in website https://support.gluu.org.
 
 = Features - =
 
@@ -43,13 +43,13 @@ All other authentication applications are supported through in website https://w
 *	Optional automatic user registration after login if the user is not already registered with your site.
 *	Assign universal role to users registering through login
 *	Variety of troubleshooting topics in plugin.
-*	**Support** using website https://www.support.gluu.org.
+*	**Support** using website https://support.gluu.org.
 
 = Website =
 *   **Gluu server site :** https://www.gluu.org
+*   **Oxd server site :** https://oxd.gluu.org
 *   **Documentation :** https://oxd.gluu.org/docs/plugin/wordpress/
 *   **Support :** https://support.gluu.org
-*   **Deploy :** https://www.gluu.org/deploy
 
 == Installation ==
 
@@ -70,7 +70,7 @@ Documentation : https://oxd.gluu.org/docs/plugin/wordpress/
 == Frequently Asked Questions ==
 
 = I need login with other SSO apps like U2F Fido token, Google+, Duo, OxPush, Gluu Basic etc. ? =
-Please visit to support website https://www.support.gluu.org.
+Please visit to support website https://support.gluu.org.
 
 = I want to add SSO to a custom location in my page. How can I achieve that? =
 To add login icons to a custom location, use a Shortcode. For further details refer to Shortcode tab in the plugin.
@@ -86,9 +86,24 @@ To add login icons to a custom location, use a Shortcode. For further details re
 
 
 == Changelog ==
+= 2.4.3 =
+* Added update site registration after saving openid configuration.
+* Not stable, not supported.
+* Working with gluu and oxd servers version 2.4.3
+
 = 2.4.2 =
 * First version of OpenID Connect Single Sign On (SSO) Plugin By Gluu.
+* Not stable, not supported.
+* Working with gluu and oxd servers version 2.4.2
 
 == Upgrade Notice ==
+
+= 2.4.3 =
+* Added update site registration after saving openid configuration.
+* Not stable, not supported.
+* Working with gluu and oxd servers version 2.4.3
+
 = 2.4.2 =
 * First version of OpenID Connect Single Sign On (SSO) Plugin By Gluu.
+* Not stable, not supported.
+* Working with gluu and oxd servers version 2.4.2

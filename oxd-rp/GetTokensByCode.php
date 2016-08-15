@@ -8,17 +8,17 @@ require_once 'ClientOXDRP.php';
 class GetTokensByCode extends ClientOXDRP
 {
     /**start parameter for request!**/
-        private $request_oxd_id = null;
-        private $request_code = null;
-        private $request_state = null;
-        private $request_scopes  = null;
+    private $request_oxd_id = null;
+    private $request_code = null;
+    private $request_state = null;
+    private $request_scopes  = null;
     /**end request parameter**/
 
     /**start parameter for response!**/
-        private $response_access_token;
-        private $response_expires_in;
-        private $response_id_token;
-        private $response_id_token_claims;
+    private $response_access_token;
+    private $response_expires_in;
+    private $response_id_token;
+    private $response_id_token_claims;
     /**end response parameter**/
 
     public function __construct()

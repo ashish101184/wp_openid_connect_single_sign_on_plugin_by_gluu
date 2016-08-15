@@ -4,7 +4,7 @@
  * Plugin Name: OpenID Connect Single Sign On (SSO) Plugin By Gluu
  * Plugin URI: https://gluu.org
  * Description: Use OpenID Connect to login by leveraging the oxd client service demon.
- * Version: 2.4.2
+ * Version: 2.4.3
  * Author: Vlad Karapetyan
  * Author URI: https://gluu.org
  * License: GPL3
@@ -14,6 +14,7 @@ define( 'GLUU_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 require GLUU_PLUGIN_PATH.'gluu_openid_oxd_settings_page.php';
 require GLUU_PLUGIN_PATH.'/class-oxd-openid-login-widget.php';
 require GLUU_PLUGIN_PATH.'/oxd-rp/RegisterSite.php';
+require GLUU_PLUGIN_PATH.'/oxd-rp/UpdateSiteRegistration.php';
 
 class gluu_OpenID_OXD {
 
@@ -79,7 +80,8 @@ class gluu_OpenID_OXD {
 				array('name'=>'Google','image'=>plugins_url( 'includes/images/icons/google.png', __FILE__ ),'value'=>'gplus'),
 				array('name'=>'Basic','image'=>plugins_url( 'includes/images/icons/basic.png', __FILE__ ),'value'=>'basic'),
 				array('name'=>'Duo','image'=>plugins_url( 'includes/images/icons/duo.png', __FILE__ ),'value'=>'duo'),
-				array('name'=>'U2F token','image'=>plugins_url( 'includes/images/icons/U2F.png', __FILE__ ),'value'=>'u2f')
+				array('name'=>'U2F token','image'=>plugins_url( 'includes/images/icons/U2F.png', __FILE__ ),'value'=>'u2f'),
+				array('name'=>'OxPush2','image'=>plugins_url( 'includes/images/icons/oxpush2.png', __FILE__ ),'value'=>'oxpush2')
 		);
 		add_option('gluu_oxd_openid_custom_scripts',$custom_scripts);
 	}
@@ -159,7 +161,8 @@ class gluu_OpenID_OXD {
 			array('name'=>'Google','image'=>plugins_url( 'includes/images/icons/google.png', __FILE__ ),'value'=>'gplus'),
 			array('name'=>'Basic','image'=>plugins_url( 'includes/images/icons/basic.png', __FILE__ ),'value'=>'basic'),
 			array('name'=>'Duo','image'=>plugins_url( 'includes/images/icons/duo.png', __FILE__ ),'value'=>'duo'),
-			array('name'=>'U2F token','image'=>plugins_url( 'includes/images/icons/U2F.png', __FILE__ ),'value'=>'u2f')
+			array('name'=>'U2F token','image'=>plugins_url( 'includes/images/icons/U2F.png', __FILE__ ),'value'=>'u2f'),
+			array('name'=>'OxPush2','image'=>plugins_url( 'includes/images/icons/oxpush2.png', __FILE__ ),'value'=>'oxpush2')
 		);
 		add_option('gluu_oxd_openid_custom_scripts',$custom_scripts);
 	}
@@ -472,7 +475,38 @@ class gluu_OpenID_OXD {
 								update_option('gluu_oxd_openid_message', $error_message);
 								$this->gluu_oxd_openid_show_error_message();
 							} else {
-								update_option('gluu_oxd_openid_message', 'Your settings are saved successfully.');
+								$config_option = get_option( 'gluu_oxd_config');
+								$update_site_registration = new UpdateSiteRegistration();
+								$update_site_registration->setRequestOxdId(get_option('gluu_oxd_id'));
+								$update_site_registration->setRequestAcrValues($config_option['acr_values']);
+								$update_site_registration->setRequestAuthorizationRedirectUri($config_option['authorization_redirect_uri']);
+								$update_site_registration->setRequestRedirectUris($config_option['redirect_uris']);
+								$update_site_registration->setRequestGrantTypes($config_option['grant_types']);
+								$update_site_registration->setRequestResponseTypes(['code']);
+								$update_site_registration->setRequestLogoutRedirectUri($config_option['logout_redirect_uri']);
+								$update_site_registration->setRequestContacts([get_option( 'gluu_oxd_openid_admin_email')]);
+								$update_site_registration->setRequestApplicationType('web');
+								$update_site_registration->setRequestClientLogoutUri($config_option['logout_redirect_uri']);
+								$update_site_registration->setRequestScope($config_option['scope']);
+								$status = $update_site_registration->request();
+								if(!$status['status']){
+									update_option( 'gluu_oxd_openid_message', $status['message']);
+									$this->gluu_oxd_openid_show_error_message();
+									return;
+								}
+								if($update_site_registration->getResponseOxdId()){
+									if(get_option('gluu_oxd_id')){
+										update_option( 'gluu_oxd_id', $update_site_registration->getResponseOxdId() );
+									}else{
+										add_option( 'gluu_oxd_id', $update_site_registration->getResponseOxdId() );
+									}
+									$this->gluu_oxd_openid_show_success_message();
+								}else{
+									update_option( 'gluu_oxd_openid_message', 'Gluu server url, oxd ip or oxd host is not a valid.');
+									$this->gluu_oxd_openid_show_error_message();
+								}
+								update_option( 'gluu_oxd_id', $update_site_registration->getResponseOxdId() );
+								update_option( 'gluu_oxd_openid_message', 'Your settings are saved successfully.' );
 								$this->gluu_oxd_openid_show_success_message();
 							}
 						} else {
