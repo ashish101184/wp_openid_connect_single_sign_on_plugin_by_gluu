@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name: OpenID Connect Single Sign On (SSO) Plugin By Gluu
- * Plugin URI: https://gluu.org
+ * Plugin URI: https://oxd.gluu.org
  * Description: Use OpenID Connect to login by leveraging the oxd client service demon.
- * Version: 2.4.3
+ * Version: 2.4.4
  * Author: Vlad Karapetyan
- * Author URI: https://gluu.org
+ * Author URI: https://github.com/dollar007
  * License: GPL3
  */
 define( 'GLUU_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
@@ -121,13 +121,13 @@ class gluu_OpenID_OXD {
 			remove_filter( 'logout_url', 'oxd_openid_redirect_after_logout');
 		}
 		$config_option = array(
+				"op_host" => '',
 				"oxd_host_ip" => '127.0.0.1',
 				"oxd_host_port" =>8099,
 				"authorization_redirect_uri" => wp_login_url().'?option=oxdOpenId',
 				"logout_redirect_uri" => site_url().'/index.php?option=allLogout',
 				"scope" => [ "openid", "profile","email","address", "clientinfo", "mobile_phone", "phone"],
 				"application_type" => "web",
-				"redirect_uris" => [ wp_login_url().'?option=oxdOpenId' ],
 				"response_types" => ["code"],
 				"grant_types" =>["authorization_code"],
 				"acr_values" => [],
@@ -312,9 +312,17 @@ class gluu_OpenID_OXD {
 							update_option('gluu_oxd_openid_message', 'All the fields are required. Please enter valid entries.');
 							$this->gluu_oxd_openid_show_error_message();
 							return;
+						}else if ($this->gluu_oxd_openid_check_empty_or_null($_POST['gluu_server_url']) || $this->gluu_oxd_openid_check_empty_or_null($_POST['gluu_server_url'])) {
+							update_option('gluu_oxd_openid_message', 'All the fields are required. Please enter Gluu server URL.');
+							$this->gluu_oxd_openid_show_error_message();
+							return;
 						} else if (!$_POST['users_can_register']) {
-
 							update_option('gluu_oxd_openid_message', 'Need to choose anyone can register checkbox.');
+							$this->gluu_oxd_openid_show_error_message();
+							return;
+						} else if (intval($_POST['oxd_host_port']) > 65535 && intval($_POST['oxd_host_port']) < 0) {
+
+							update_option('gluu_oxd_openid_message', 'Enter your oxd host port (Min. number 0, Max. number 65535)');
 							$this->gluu_oxd_openid_show_error_message();
 							return;
 						} else if (intval($_POST['oxd_host_port']) > 65535 && intval($_POST['oxd_host_port']) < 0) {
@@ -326,7 +334,11 @@ class gluu_OpenID_OXD {
 							update_option('gluu_oxd_openid_message', 'Please match the format of Email. No special characters are allowed.');
 							$this->gluu_oxd_openid_show_error_message();
 							return;
-						} else {
+						} else if (filter_var(sanitize_text_field($_POST['gluu_server_url']), FILTER_VALIDATE_URL) === false) {
+							update_option('gluu_oxd_openid_message', 'Please enter valid URL.');
+							$this->gluu_oxd_openid_show_error_message();
+							return;
+						}else {
 							$email = sanitize_email($_POST['email']);
 							update_option('gluu_oxd_openid_admin_email', $email);
 							$oxd_host_port = intval($_POST['oxd_host_port']);
@@ -342,13 +354,13 @@ class gluu_OpenID_OXD {
 							update_option('default_role', wp_unslash($_POST['default_role']));
 						}
 						$config_option = array(
+							"op_host" => sanitize_text_field($_POST['gluu_server_url']),
 							"oxd_host_ip" => '127.0.0.1',
 							"oxd_host_port" => $oxd_host_port,
 							"authorization_redirect_uri" => wp_login_url() . '?option=oxdOpenId',
 							"logout_redirect_uri" => site_url() . '/index.php?option=allLogout',
 							"scope" => ["openid", "profile", "email", "address", "clientinfo", "mobile_phone", "phone"],
 							"application_type" => "web",
-							"redirect_uris" => [wp_login_url() . '?option=oxdOpenId'],
 							"response_types" => ["code"],
 							"grant_types" => ["authorization_code"],
 							"acr_values" => [],
@@ -356,9 +368,9 @@ class gluu_OpenID_OXD {
 						);
 						update_option('gluu_oxd_config', $config_option);
 						$register_site = new RegisterSite();
+						$register_site->setRequestOpHost($config_option['op_host']);
 						$register_site->setRequestAcrValues($config_option['acr_values']);
 						$register_site->setRequestAuthorizationRedirectUri($config_option['authorization_redirect_uri']);
-						$register_site->setRequestRedirectUris($config_option['redirect_uris']);
 						$register_site->setRequestGrantTypes($config_option['grant_types']);
 						$register_site->setRequestResponseTypes(['code']);
 						$register_site->setRequestLogoutRedirectUri($config_option['logout_redirect_uri']);
@@ -480,7 +492,6 @@ class gluu_OpenID_OXD {
 								$update_site_registration->setRequestOxdId(get_option('gluu_oxd_id'));
 								$update_site_registration->setRequestAcrValues($config_option['acr_values']);
 								$update_site_registration->setRequestAuthorizationRedirectUri($config_option['authorization_redirect_uri']);
-								$update_site_registration->setRequestRedirectUris($config_option['redirect_uris']);
 								$update_site_registration->setRequestGrantTypes($config_option['grant_types']);
 								$update_site_registration->setRequestResponseTypes(['code']);
 								$update_site_registration->setRequestLogoutRedirectUri($config_option['logout_redirect_uri']);

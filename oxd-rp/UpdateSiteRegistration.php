@@ -11,7 +11,6 @@ class UpdateSiteRegistration extends ClientOXDRP
     private $request_authorization_redirect_uri = null;
     private $request_logout_redirect_uri = null;
     private $request_application_type = null;
-    private $request_redirect_uris = null;
     private $request_acr_values = null;
     private $request_client_jwks_uri = null;
     private $request_client_token_endpoint_auth_method = null;
@@ -197,22 +196,6 @@ class UpdateSiteRegistration extends ClientOXDRP
     /**
      * @return null
      */
-    public function getRequestRedirectUris()
-    {
-        return $this->request_redirect_uris;
-    }
-
-    /**
-     * @param null $request_redirect_uris
-     */
-    public function setRequestRedirectUris($request_redirect_uris)
-    {
-        $this->request_redirect_uris = $request_redirect_uris;
-    }
-
-    /**
-     * @return null
-     */
     public function getRequestAcrValues()
     {
         return $this->request_acr_values;
@@ -287,7 +270,6 @@ class UpdateSiteRegistration extends ClientOXDRP
             "oxd_id" => $this->getRequestOxdId(),
             "post_logout_redirect_uri" => $this->getRequestLogoutRedirectUri(),
             "application_type" => $this->getRequestApplicationType(),
-            "redirect_uris" => $this->getRequestRedirectUris(),
             "acr_values" => $this->getRequestAcrValues(),
             "scope" => $this->getRequestScope(),
             "client_jwks_uri" => $this->getRequestClientJwksUri(),

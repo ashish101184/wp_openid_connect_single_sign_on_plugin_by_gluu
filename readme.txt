@@ -1,9 +1,9 @@
 === OpenID Connect Single Sign On (SSO) Plugin By Gluu ===
-Contributors: dollar007, nynymike, willow9886, yuriyz, yurem, tecoholic, ganesh-at-wiw
+Contributors: vladkarapetyan1988, dollar007, nynymike, willow9886
 Donate link: https://www.gluu.org/deploy/
 Tags: shortcodes, widgets, google plus login, u2f token, fido login, gluu basic login, gluu, duo, oauth, oxpush, auto user registration, auto-login, autologin, openid connect, single sign-on, social authentication,social sign-in, SSO technology
-Requires at least: 2.4.2
-Tested up to: 2.4.2
+Requires at least: 2.0.2
+Tested up to: 4.5
 Stable tag: 2.4.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -86,6 +86,13 @@ To add login icons to a custom location, use a Shortcode. For further details re
 
 
 == Changelog ==
+
+= 2.4.4 =
+* Added gluu server url section (op_host).
+* Removed redirect_uris and added prompt => login
+* Stable version, supported by Gluu Inc.
+* Working with gluu and oxd servers version 2.4.4
+
 = 2.4.3 =
 * Added update site registration after saving openid configuration.
 * Not stable, not supported.
@@ -97,6 +104,11 @@ To add login icons to a custom location, use a Shortcode. For further details re
 * Working with gluu and oxd servers version 2.4.2
 
 == Upgrade Notice ==
+= 2.4.4 =
+* Added gluu server url section (op_host).
+* Removed redirect_uris and added prompt => login
+* Stable version, supported by Gluu Inc.
+* Working with gluu and oxd servers version 2.4.4
 
 = 2.4.3 =
 * Added update site registration after saving openid configuration.

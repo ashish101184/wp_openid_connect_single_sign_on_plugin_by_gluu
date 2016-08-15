@@ -57,6 +57,7 @@ function gluu_oxd_openid_show_new_registration_page($custom_nonce) {
     update_option ( 'oxd_openid_new_registration', 'true' );
     global $current_user;
     get_currentuserinfo();
+    $gluu_oxd_config 	= get_option('gluu_oxd_config');
     ?>
     <form name="f" method="post" action="" id="register-form">
         <input type="hidden" name="option" value="oxd_openid_connect_register_site_oxd" />
@@ -83,14 +84,14 @@ function gluu_oxd_openid_show_new_registration_page($custom_nonce) {
                 <ol style="list-style:decimal !important; margin: 30px">
                     <li>Extract and copy in your DMZ Server.</li>
                     <li>Download the latest oxd-server package for Centos or Ubuntu. See
-                        <a href="http://gluu.org/docs-oxd">oxd docs</a> for more info.
+                        <a href="https://oxd.gluu.org/docs">oxd docs</a> for more info.
                     <li>If you are installing an .rpm or .deb, make sure you have Java in your server.
                     <li>Edit <b>oxd-conf.json</b> in the <b>conf</b> directory to specify the port on which
                         it will run, and specify the hostname of the OpenID Connect provider.</li>
                     <li>Open the command line and navigate to the extracted folder in the <b>bin</b> directory.</li>
                     <li>For Linux environment, run <b>sh oxd-start.sh &</b></li>
                     <li>For Windows environment, run <b>oxd-start.bat</b></li>
-                    <li>After the server starts, set the port number and your email in this page and click Next.</li>
+                    <li>After the server starts, set the port number, Gluu server URL and your email in this page and click Next.</li>
                 </ol>
             </div>
             <hr>
@@ -119,10 +120,14 @@ function gluu_oxd_openid_show_new_registration_page($custom_nonce) {
                                value="<?php echo $current_user->user_email;?>" /></td>
                 </tr>
                 <tr>
+                    <td><b><font color="#FF0000">*</font>Gluu Server URL:</b></td>
+                    <td><input class="oxd_openid_table_textbox" type="url" name="gluu_server_url" required placeholder="Enter Gluu server URL" value="<?php if($gluu_oxd_config['op_host']){ echo $gluu_oxd_config['op_host'];} ?>" /></td>
+                </tr>
+                <tr>
                     <td><b><font color="#FF0000">*</font>Oxd port:</b></td>
                     <td>
                         <br/>
-                        <input class="oxd_openid_table_textbox" required type="number" name="oxd_host_port" value="8099" placeholder="Please enter free port (for example 8099). (Min. number 0, Max. number 65535)" />
+                        <input class="oxd_openid_table_textbox" required type="number" name="oxd_host_port" value="<?php if($gluu_oxd_config['oxd_host_port']){ echo $gluu_oxd_config['oxd_host_port'];} ?>" placeholder="Please enter free port (for example 8099). (Min. number 0, Max. number 65535)" />
                         <p style="color:red" class="description">It must be free port in your server.</p>
                     </td>
                 </tr>
@@ -831,28 +836,28 @@ function gluu_oxd_openid_troubleshoot_info(){ ?>
                     <p>In details how to use plugin step by step.</p>
                     <p>Plugin will not be working if your host does not have https://.</p>
                     <h2><a id="Step_1_Install_Gluuserver_13"></a>Step 1. Install Gluu-server</h2>
-                    <p>(version 2.4.3)</p>
+                    <p>(version 2.4.4)</p>
                     <p>If you want to use external gluu server, You can not do this step.</p>
                     <p><a target="_blank" href="https://www.gluu.org/docs/deployment/">Gluu-server installation gide</a>.</p>
                     <h2><a id="Step_2_Download_oxDserver_21"></a>Step 2. Download oxd-server</h2>
-                    <p><a target="_blank" href="https://ox.gluu.org/maven/org/xdi/oxd-server/2.4.3.Final/oxd-server-2.4.3.Final-distribution.zip">Download oxd-server-2.4.3</a>.</p>
+                    <p><a target="_blank" href="https://ox.gluu.org/maven/org/xdi/oxd-server/2.4.4.Final/oxd-server-2.4.4.Final-distribution.zip">Download oxd-server-2.4.4</a>.</p>
                     <h2><a id="Step_3_Unzip_and_run_oXDserver_31"></a>Step 3. Unzip and run oxd-server</h2>
                     <ol>
-                        <li>Unzip your oxD-server.</li>
+                        <li>Unzip your oxd-server.</li>
                         <li>Open the command line and navigate to the extracted folder in the conf directory.</li>
                         <li>Open oxd-conf.json file.</li>
                         <li>If your server is using 8099 port, please change “port” number to free port, which is not used.</li>
-                        <li>Set parameter “op_host”:“Your gluu-server-url (internal or external)”</li>
                         <li>Open the command line and navigate to the extracted folder in the bin directory.</li>
-                        <li>For Linux environment, run sh <a href="http://oxd-start.sh">oxd-start.sh</a>&amp;.</li>
+                        <li>For Linux environment, run sh oxd-start.sh&amp;.</li>
                         <li>For Windows environment, run oxd-start.bat.</li>
                         <li>After the server starts, go to Step 4.</li>
                     </ol>
                     <p><a target="_blank" href="https://oxd.gluu.org/docs/oxdserver/install/">Oxd-server installation gide</a>.</p>
                     <h2><a id="Step_6_General_73"></a>Step 4. General</h2>
-                    <p><img src="<?php echo plugins_url('docu/1.png', __FILE__)?>" alt="General"></p>
+                    <p><img src="<?php echo plugins_url('docu/424.png', __FILE__)?>" alt="General"></p>
                     <ol>
                         <li>Admin Email: please add your or admin email address for registrating site in Gluu server.</li>
+                        <li>Gluu server url: please enter Gluu server URL.</li>
                         <li>Port number: choose that port which is using oxd-server (see in oxd-server/conf/oxd-conf.json file).</li>
                         <li>Click <code>Next</code> to continue.</li>
                     </ol>
