@@ -308,6 +308,11 @@ class gluu_OpenID_OXD {
 					}
 					if (isset($_POST['option']) and $_POST['option'] == "oxd_openid_connect_register_site_oxd") {
 
+						if(!isset($_SERVER['HTTPS']) or $_SERVER['HTTPS'] != "on") {
+							update_option('gluu_oxd_openid_message', 'OpenID Connect requires https. This plugin will not work if your website uses http only.');
+							$this->gluu_oxd_openid_show_error_message();
+							return;
+						}
 						if ($this->gluu_oxd_openid_check_empty_or_null($_POST['email']) || $this->gluu_oxd_openid_check_empty_or_null($_POST['oxd_host_port'])) {
 							update_option('gluu_oxd_openid_message', 'All the fields are required. Please enter valid entries.');
 							$this->gluu_oxd_openid_show_error_message();
