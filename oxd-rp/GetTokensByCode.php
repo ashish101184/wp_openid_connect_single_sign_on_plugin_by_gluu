@@ -191,9 +191,7 @@ class GetTokensByCode extends ClientOXDRP
     {
         $this->params = array(
             "oxd_id" => $this->getRequestOxdId(),
-            "code" => $this->getRequestCode(),
-            "state" => $this->getRequestState(),
-            "scopes" => $this->getRequestScopes()
+            "code" => $this->getRequestCode()
         );
     }
 
