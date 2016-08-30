@@ -217,7 +217,7 @@ if(gluu_is_oxd_registered()) {
 
 	function gluu_oxd_openid_logout_validate()
 	{
-		if (isset($_REQUEST['option']) and strpos($_REQUEST['option'], 'allLogout') !== false && !isset($_REQUEST['session_states'])) {
+		if (isset($_REQUEST['option']) and strpos($_REQUEST['option'], 'allLogout') !== false && !isset($_REQUEST['state'])) {
 
 			echo '<script>
 						var delete_cookie = function(name) {
@@ -226,6 +226,7 @@ if(gluu_is_oxd_registered()) {
 						delete_cookie(\'user_oxd_access_token\');
 						delete_cookie(\'user_oxd_id_token\');
 						delete_cookie(\'session_states\');
+						delete_cookie(\'states\');
 					</script>';
 			wp_destroy_current_session();
 			wp_clear_auth_cookie();
@@ -277,9 +278,11 @@ if(gluu_is_oxd_registered()) {
 			$_SESSION['user_oxd_id_token']= $get_tokens_by_code->getResponseIdToken();
 			$_SESSION['user_oxd_access_token']= $get_tokens_by_code->getResponseAccessToken();
 			$_SESSION['session_states']= $_REQUEST['session_state'];
+			$_SESSION['states']= $_REQUEST['state'];
 			setcookie( 'user_oxd_id_token', $get_tokens_by_code->getResponseIdToken(), time()+3600*24*100, COOKIEPATH, COOKIE_DOMAIN, false);
 			setcookie( 'user_oxd_access_token', $get_tokens_by_code->getResponseAccessToken(), time()+3600*24*100, COOKIEPATH, COOKIE_DOMAIN, false);
 			setcookie( 'session_states', $_REQUEST['session_state'], time()+3600*24*100, COOKIEPATH, COOKIE_DOMAIN, false);
+			setcookie( 'states', $_REQUEST['state'], time()+3600*24*100, COOKIEPATH, COOKIE_DOMAIN, false);
 			$get_user_info = new GetUserInfo();
 			$get_user_info->setRequestOxdId(get_option('gluu_oxd_id'));
 			$get_user_info->setRequestAccessToken($_SESSION['user_oxd_access_token']);
