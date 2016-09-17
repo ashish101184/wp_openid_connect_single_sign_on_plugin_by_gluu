@@ -204,7 +204,7 @@ class UpdateSiteRegistration extends ClientOXDRP
     /**
      * @param null $request_acr_values
      */
-    public function setRequestAcrValues($request_acr_values = 'basic')
+    public function setRequestAcrValues($request_acr_values)
     {
         $this->request_acr_values = $request_acr_values;
     }

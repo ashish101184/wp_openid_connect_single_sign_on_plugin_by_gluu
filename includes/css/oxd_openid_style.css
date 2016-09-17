@@ -246,3 +246,7 @@ a{
 	background-color: rgba(251, 102, 0, 0.29) !important;
 	margin-left: 3px !important;
 }
+.not_checked_button[disabled]:hover {
+	background-color: #66dade !important;
+	border:3px solid #53cc6b !important;
+}

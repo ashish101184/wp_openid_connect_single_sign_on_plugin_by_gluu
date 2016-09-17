@@ -16,6 +16,7 @@ class GetUserInfo extends ClientOXDRP
     private $response_claims;
     private $response_sub;
     private $response_name;
+    private $response_user_name;
     private $response_given_name;
     private $response_family_name;
     private $response_middle_name;
@@ -46,6 +47,15 @@ class GetUserInfo extends ClientOXDRP
     {
         $this->response_claims = $this->getResponseData()->claims;
         return $this->response_claims;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponseUserName()
+    {
+        $this->response_user_name = $this->getResponseClaims()->user_name[0];
+        return $this->response_user_name;
     }
 
     /**
