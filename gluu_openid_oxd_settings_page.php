@@ -551,23 +551,41 @@ function gluu_oxd_openid_login_config_info($custom_nonce){
                                         <th><h3>Scope name</h3></th>
                                         <th><h3>Delete</h3></th>
                                     </tr>
+                                    <tr>
+                                        <th>1</th>
+                                        <th>openid</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr>
+                                        <th>2</th>
+                                        <th>profile</th>
+                                        <th><h3></h3></th>
+                                    </tr>
+                                    <tr>
+                                        <th>3</th>
+                                        <th>email</th>
+                                        <th></th>
+                                    </tr>
                                     <?php
-                                    $custom_scripts = get_option('gluu_oxd_openid_scops');
-                                    $n = 0;
-                                    foreach($custom_scripts as $custom_script){
-                                        $n++;
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $n;?></td>
-                                            <td><?php echo $custom_script;?></td>
-                                            <td>
-                                                <?php if($custom_script!='openid'){?>
-                                                    <input type="button" onclick="delete_scopes('<?php echo $custom_script;?>','<?php echo $custom_nonce;?>')" class="button button-primary button-large" <?php if(!gluu_is_oxd_registered() || $custom_script=='openid') echo 'disabled'?> value="Delete" name="set_oxd_config" />
-                                                <?php }?>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                    }
+                                    $n = 3;
+                                    foreach($get_scopes as $scop) :?>
+                                        <?php if ($scop == 'openid' or $scop == 'email' or $scop == 'profile'){?>
+                                        <?php } else{
+                                            $n++;
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $n;?></td>
+                                                <td><?php echo $scop;?></td>
+                                                <td>
+                                                    <?php if($scop!='openid'){?>
+                                                        <input type="button" onclick="delete_scopes('<?php echo $scop;?>','<?php echo $custom_nonce;?>')" class="button button-primary button-large" <?php if(!gluu_is_oxd_registered() || $scop=='openid') echo 'disabled'?> value="Delete" name="set_oxd_config" />
+                                                    <?php }?>
+                                                </td>
+                                            </tr>
+                                        <?php }
+
+
+                                    endforeach;
                                     ?>
                                 </table>
                                 <br/>

@@ -937,29 +937,37 @@ class gluu_OpenID_OXD {
 		$config_option = get_option( 'gluu_oxd_config' );
 		$json = file_get_contents(get_option('gluu_op_host').'/.well-known/openid-configuration');
 		$obj = json_decode($json);
-		if(!empty($obj->end_session_endpoint)){
-			if(!empty($_SESSION['user_oxd_id_token'])){
-				if(get_option('gluu_oxd_id') && $_SESSION['user_oxd_id_token']){
-					$logout = new Logout();
-					$logout->setRequestOxdId(get_option('gluu_oxd_id'));
-					$logout->setRequestIdToken($_SESSION['user_oxd_id_token']);
-					$logout->setRequestPostLogoutRedirectUri($config_option['logout_redirect_uri']);
-					$logout->setRequestSessionState($_SESSION['session_states']);
-					$logout->setRequestState($_SESSION['states']);
-					$logout->request();
+		if(time()<(int)$_SESSION['session_in_op']){
+			if(!empty($obj->end_session_endpoint)){
+				if(!empty($_SESSION['user_oxd_id_token'])){
+					if(get_option('gluu_oxd_id') && $_SESSION['user_oxd_id_token'] && $_SESSION['session_in_op']){
+						$logout = new Logout();
+						$logout->setRequestOxdId(get_option('gluu_oxd_id'));
+						$logout->setRequestIdToken($_SESSION['user_oxd_id_token']);
+						$logout->setRequestPostLogoutRedirectUri($config_option['logout_redirect_uri']);
+						$logout->setRequestSessionState($_SESSION['session_states']);
+						$logout->setRequestState($_SESSION['states']);
+						$logout->request();
+						unset($_SESSION['user_oxd_access_token']);
+						unset($_SESSION['user_oxd_id_token']);
+						unset($_SESSION['session_states']);
+						unset($_SESSION['states']);
+						unset($_SESSION['session_in_op']);
+						wp_redirect( $logout->getResponseObject()->data->uri );
+						exit;
 
-					unset($_SESSION['user_oxd_access_token']);
-					unset($_SESSION['user_oxd_id_token']);
-					unset($_SESSION['session_states']);
-					unset($_SESSION['states']);
-
-					wp_redirect( $logout->getResponseObject()->data->uri );
-					exit;
+					}
 
 				}
-
 			}
+		}else{
+			unset($_SESSION['user_oxd_access_token']);
+			unset($_SESSION['user_oxd_id_token']);
+			unset($_SESSION['session_states']);
+			unset($_SESSION['states']);
+			unset($_SESSION['session_in_op']);
 		}
+
 		wp_redirect(site_url());
 	}
 }
@@ -1068,10 +1076,9 @@ function gluu_oxd_openid_login_validate(){
 		$get_tokens_by_code->setRequestOxdId(get_option('gluu_oxd_id'));
 		$get_tokens_by_code->setRequestCode($_REQUEST['code']);
 		$get_tokens_by_code->setRequestState($_REQUEST['state']);
-		//$get_tokens_by_code->setRequestNonce($_REQUEST['nonce']);
 		$get_tokens_by_code->request();
-		//var_dump($get_tokens_by_code->getResponseObject());exit;
 		$get_tokens_by_code_array = $get_tokens_by_code->getResponseObject();
+		$_SESSION['session_in_op']= $get_tokens_by_code->getResponseIdTokenClaims()->exp[0];
 		$_SESSION['user_oxd_id_token']= $get_tokens_by_code->getResponseIdToken();
 		$_SESSION['user_oxd_access_token']= $get_tokens_by_code->getResponseAccessToken();
 		$_SESSION['session_states']= $_REQUEST['session_state'];

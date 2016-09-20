@@ -1,5 +1,5 @@
 === OpenID Connect Single Sign-On (SSO) Plugin By Gluu ===
-Contributors:  nynymike, willow9886, dollar007
+Contributors:  gluu
 Donate link: https://www.gluu.org/deploy/
 Tags: google plus login, u2f token, fido login, gluu basic login, gluu, duo, oauth, oxpush, auto user registration, auto-login, autologin, openid connect, single sign-on, social authentication,social sign-in, SSO technology
 Requires at least: 2.0.2
@@ -70,7 +70,7 @@ Please visit to support website https://support.gluu.org.
 2. General page for OpenID Connect Provider, which doesn't support dynamic registration.
 3. Edit page for OpenID Connect Provider, which supports dynamic registration.
 4. Edit page for OpenID Connect Provider, which doesn't support dynamic registration.
-5. OpenID Connect Configuration 
+5. OpenID Connect Configuration
 
 == Changelog ==
 
